@@ -1,1 +1,3 @@
 # rculture
+
+React + TypeScript + Vite
