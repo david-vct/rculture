@@ -1,4 +1,4 @@
-import { UserInfo } from "./types"
+import { GameData, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -17,6 +17,31 @@ export function initializeEmptyQuestionFields() {
 		rating: { like: 0, dislike: 0 },
 		difficulty: { win: 0, lose: 0 },
 		tags: [],
+	}
+}
+
+export function initializeEmptyGameData(): GameData {
+	return {
+		name: "XXXX",
+		isSetup: false,
+		users: {},
+		tags: [],
+		questions: [],
+		questionIndex: 0,
+	}
+}
+
+export function getSuccessStoreResponse<DataType>(data: DataType[]): StoreResponse<DataType> {
+	return {
+		success: true,
+		data,
+	}
+}
+
+export function getErrorStoreResponse<DataType>(error: unknown): StoreResponse<DataType> {
+	return {
+		success: false,
+		error,
 	}
 }
 
