@@ -11,17 +11,18 @@ import {
 	where,
 } from "firebase/firestore"
 import { db } from "../config/firebase"
-import { initializeEmptyGameData } from "../utils/utils"
+import { getErrorStoreResponse, getSuccessStoreResponse, initializeEmptyGameData } from "../utils/utils"
 import { findDataByQuery } from "./store"
 import { Game, GameSchema, StoreResponse } from "../utils/types"
+import { validateStoreResponseLength } from "./validation"
 
 const gamesRef = collection(db, "games")
 
 /* Basic CRUD methods  */
 
 async function findGameByQuery(q: Query) {
-	const games: StoreResponse<Game> = await findDataByQuery(q, GameSchema)
-	return games
+	const response: StoreResponse<Game> = await findDataByQuery(q, GameSchema)
+	return response
 }
 
 export async function findAllGames() {
@@ -30,10 +31,12 @@ export async function findAllGames() {
 	return games
 }
 
-export async function findGameById(gameId: string) {
-	const q = query(gamesRef, where("gameId", "==", gameId))
-	const games = await findGameByQuery(q)
-	return games
+export async function findGameById(id: string) {
+	const q = query(gamesRef, where(documentId(), "==", id))
+	let response = await findGameByQuery(q)
+
+	response = validateStoreResponseLength(response, 1)
+	return response
 }
 
 export async function createGame() {
@@ -42,21 +45,30 @@ export async function createGame() {
 	return gameRef.id
 }
 
-export async function updateGame(gameId: string, tags: string[]) {
-	const gameRef = doc(db, `games/${gameId}`)
-	const data = await setDoc(gameRef, { tags }, { merge: true })
-	return data
+export async function updateGame(id: string, data: object): Promise<StoreResponse<Game>> {
+	if (!(await existsGameById(id))) {
+		return getErrorStoreResponse(`Game ${id} does not exist`)
+	}
+
+	// Update data
+	const gameRef = doc(db, `games/${id}`)
+	await setDoc(gameRef, data, { merge: true })
+	return getSuccessStoreResponse([])
+}
+
+export async function existsGameById(id: string) {
+	const response = await findGameById(id)
+	return response.success
 }
 
 /* Domain methods */
 
-export async function startGame(gameId: string) {
-	const gameRef = doc(db, `games/${gameId}`)
-	const data = await setDoc(gameRef, { isSetup: true }, { merge: true })
-	return data
+export async function startGame(id: string) {
+	const response = await updateGame(id, { isSetup: true })
+	return response
 }
 
-export async function listenGame(gameId: string, callback: (snapshot: QuerySnapshot) => void) {
-	const q = query(gamesRef, where(documentId(), "==", gameId))
+export async function listenGame(id: string, callback: (snapshot: QuerySnapshot) => void) {
+	const q = query(gamesRef, where(documentId(), "==", id))
 	onSnapshot(q, callback)
 }

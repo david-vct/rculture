@@ -1,4 +1,4 @@
-import { GameData, UserInfo } from "./types"
+import { GameData, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -28,6 +28,20 @@ export function initializeEmptyGameData(): GameData {
 		tags: [],
 		questions: [],
 		questionIndex: 0,
+	}
+}
+
+export function getSuccessStoreResponse<DataType>(data: DataType[]): StoreResponse<DataType> {
+	return {
+		success: true,
+		data,
+	}
+}
+
+export function getErrorStoreResponse<DataType>(error: unknown): StoreResponse<DataType> {
+	return {
+		success: false,
+		error,
 	}
 }
 

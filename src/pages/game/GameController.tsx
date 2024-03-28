@@ -18,7 +18,7 @@ export const GameController = () => {
 	useEffect(() => {
 		if (gameId === undefined) {
 			console.error("Undefined game id")
-			navigate("/")
+			navigate("/error/")
 			return
 		}
 
@@ -28,7 +28,12 @@ export const GameController = () => {
 			// Error handler
 			if (!response.success) {
 				console.error(response.error)
-				navigate("/")
+				navigate("/error/")
+				return
+			}
+			if (response.data.length !== 1) {
+				console.error("Number of games must be 1")
+				navigate("/error/")
 				return
 			}
 

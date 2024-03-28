@@ -7,10 +7,7 @@ import { StoreResponse } from "../utils/types"
  * @param q
  * @returns data formated
  */
-export async function findDataByQuery(
-	q: Query,
-	schema: ZodType
-): Promise<StoreResponse<z.infer<typeof schema>>> {
+export async function findDataByQuery(q: Query, schema: ZodType): Promise<StoreResponse<z.infer<typeof schema>>> {
 	// Get documnet from db
 	const data = await getDocs(q)
 	// Format data
@@ -22,10 +19,7 @@ export async function findDataByQuery(
  * @param snapshot
  * @returns
  */
-export function getSnapshotData(
-	snapshot: QuerySnapshot,
-	schema: ZodType
-): StoreResponse<z.infer<typeof schema>> {
+export function getSnapshotData(snapshot: QuerySnapshot, schema: ZodType): StoreResponse<z.infer<typeof schema>> {
 	let response: StoreResponse<z.infer<typeof schema>>
 	try {
 		response = {
