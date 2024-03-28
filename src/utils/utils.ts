@@ -24,7 +24,7 @@ export function initializeEmptyGameData(): GameData {
 	return {
 		name: "XXXX",
 		isSetup: false,
-		users: [],
+		users: {},
 		tags: [],
 		questions: [],
 		questionIndex: 0,

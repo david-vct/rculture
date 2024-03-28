@@ -1,8 +1,4 @@
-import {
-	createUserWithEmailAndPassword,
-	signInWithPopup,
-	signOut,
-} from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth"
 import { auth, googleAuthProvider } from "../config/firebase"
 import { UserInfo } from "../utils/types"
 import { initializeAnonymousUserInfo } from "../utils/utils"
@@ -68,7 +64,7 @@ export function getUserInfo(): UserInfo {
 	const userInfoJson = localStorage.getItem("auth")
 
 	if (userInfoJson === null) {
-		return {} as UserInfo
+		return initializeAnonymousUserInfo()
 	}
 
 	return JSON.parse(userInfoJson) as UserInfo

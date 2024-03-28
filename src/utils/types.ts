@@ -59,7 +59,7 @@ export enum QuestionType {
 export const GameDataSchema = z.object({
 	name: z.string().toUpperCase().length(4),
 	isSetup: z.boolean(),
-	users: z.array(z.string()),
+	users: z.record(z.string(), z.string()),
 	tags: z.array(z.string()),
 	questions: z.array(z.string()),
 	questionIndex: z.number(),
@@ -78,9 +78,7 @@ export const StoreResponseSchema = z.discriminatedUnion("success", [
 	z.object({ success: z.literal(false), error: z.any() }),
 ])
 
-export type StoreResponse<DataType> =
-	| { success: true; data: DataType[] }
-	| { success: false; error: unknown }
+export type StoreResponse<DataType> = { success: true; data: DataType[] } | { success: false; error: unknown }
 
 // User types
 export const UserInfoSchema = z.object({

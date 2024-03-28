@@ -7,13 +7,13 @@ import {
 	documentId,
 	onSnapshot,
 	query,
-	setDoc,
+	updateDoc,
 	where,
 } from "firebase/firestore"
 import { db } from "../config/firebase"
 import { getErrorStoreResponse, getSuccessStoreResponse, initializeEmptyGameData } from "../utils/utils"
 import { findDataByQuery } from "./store"
-import { Game, GameSchema, StoreResponse } from "../utils/types"
+import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
 
 const gamesRef = collection(db, "games")
@@ -52,7 +52,8 @@ export async function updateGame(id: string, data: object): Promise<StoreRespons
 
 	// Update data
 	const gameRef = doc(db, `games/${id}`)
-	await setDoc(gameRef, data, { merge: true })
+	// await setDoc(gameRef, data, { merge: true })
+	await updateDoc(gameRef, data)
 	return getSuccessStoreResponse([])
 }
 
@@ -65,6 +66,11 @@ export async function existsGameById(id: string) {
 
 export async function startGame(id: string) {
 	const response = await updateGame(id, { isSetup: true })
+	return response
+}
+
+export async function addPlayerToGame(gameId: string, userInfo: UserInfo) {
+	const response = await updateGame(gameId, { ["users." + userInfo.id]: userInfo.name })
 	return response
 }
 
