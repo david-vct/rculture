@@ -55,13 +55,32 @@ export enum QuestionType {
 	IMAGE,
 }
 
+// Games types
+export const GameDataSchema = z.object({
+	name: z.string().toUpperCase().length(4),
+	isSetup: z.boolean(),
+	users: z.array(z.string()),
+	tags: z.array(z.string()),
+	questions: z.array(z.string()),
+	questionIndex: z.number(),
+})
+
+export const GameSchema = GameDataSchema.extend({
+	id: z.string(),
+})
+
+export type GameData = z.infer<typeof GameDataSchema>
+export type Game = z.infer<typeof GameSchema>
+
 // Store types
 export const StoreResponseSchema = z.discriminatedUnion("success", [
 	z.object({ success: z.literal(true), data: z.object({}) }),
-	z.object({ success: z.literal(false), error: z.instanceof(Error) }),
+	z.object({ success: z.literal(false), error: z.any() }),
 ])
 
-export type StoreResponse = z.infer<typeof StoreResponseSchema>
+export type StoreResponse<DataType> =
+	| { success: true; data: DataType[] }
+	| { success: false; error: unknown }
 
 // User types
 export const UserInfoSchema = z.object({

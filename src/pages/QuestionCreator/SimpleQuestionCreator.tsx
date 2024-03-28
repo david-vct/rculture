@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createQuestion } from "../../services/store"
+import { createQuestion } from "../../services/questions-store"
 import { initializeEmptyQuestionFields, splitAndTrim } from "../../utils/utils"
 
 export const SimpleQuestionCreator = () => {

@@ -1,3 +1,4 @@
+import { JoinGame } from "../components/JoinGame"
 import { Navbar } from "../components/Navbar"
 
 export const Home = () => {
@@ -6,6 +7,7 @@ export const Home = () => {
 			<Navbar />
 			<h1>Rculture</h1>
 			<p>A game about culture, quiz and chill</p>
+			<JoinGame />
 		</div>
 	)
 }
