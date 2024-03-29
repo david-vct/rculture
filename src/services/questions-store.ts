@@ -1,4 +1,4 @@
-import { Query, addDoc, collection, query, where } from "firebase/firestore"
+import { Query, addDoc, collection, documentId, query, where } from "firebase/firestore"
 import { db } from "../config/firebase"
 import { Question, QuestionSchema } from "../utils/types"
 import { isValideQuestion } from "./validation"
@@ -19,7 +19,7 @@ export async function findAllQuestions() {
 }
 
 export async function findQuestionById(questionId: string) {
-	const q = query(questionsRef, where("id", "==", questionId))
+	const q = query(questionsRef, where(documentId(), "==", questionId))
 	const data = await findQuestionByQuery(q)
 	return data
 }
