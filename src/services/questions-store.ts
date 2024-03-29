@@ -1,40 +1,44 @@
-import { Query, addDoc, collection, documentId, query, where } from "firebase/firestore"
+import { Query, addDoc, collection, documentId, limit, query, where } from "firebase/firestore"
 import { db } from "../config/firebase"
-import { Question, QuestionSchema } from "../utils/types"
+import { Question, QuestionSchema, StoreResponse } from "../utils/types"
 import { isValideQuestion } from "./validation"
 import { findDataByQuery } from "./store"
+import { getErrorStoreResponse, getSuccessStoreResponse } from "../utils/utils"
 
 // References to the collections
 const questionsRef = collection(db, "questions")
 
 async function findQuestionByQuery(q: Query) {
-	const questions = await findDataByQuery(q, QuestionSchema)
-	return questions
+	const response: StoreResponse<Question> = await findDataByQuery(q, QuestionSchema)
+	return response
 }
 
 export async function findAllQuestions() {
 	const q = query(questionsRef)
-	const data = await findQuestionByQuery(q)
-	return data
+	const response = await findQuestionByQuery(q)
+	return response
 }
 
 export async function findQuestionById(questionId: string) {
 	const q = query(questionsRef, where(documentId(), "==", questionId))
-	const data = await findQuestionByQuery(q)
-	return data
+	const response = await findQuestionByQuery(q)
+	return response
 }
 
-export async function findQuestionByTags(tags: string[]) {
-	const q = query(questionsRef, where("tags", "array-contains-any", tags))
-	const data = await findQuestionByQuery(q)
-	return data
-}
-
-export const createQuestion = async (question: Question) => {
+export async function createQuestion(question: Question) {
 	if (!isValideQuestion(question)) {
-		return
+		return getErrorStoreResponse("Not valide question")
 	}
 
 	const data = await addDoc(questionsRef, question)
-	return data.id
+	return getSuccessStoreResponse([data.id])
+}
+
+/* Domain methods */
+
+export async function findQuestionByTags(tags: string[], nbQuestions: number = 10) {
+	const q = query(questionsRef, where("tags", "array-contains-any", tags), limit(nbQuestions))
+
+	const response = await findQuestionByQuery(q)
+	return response
 }

@@ -65,6 +65,7 @@ export const GameController = () => {
 				setQuestionIndex(game.questionIndex)
 			}
 		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	if (gameId === undefined) {
@@ -82,7 +83,7 @@ export const GameController = () => {
 				<div>
 					<h1>Nouvelle partie</h1>
 					<LobbySettings gameId={gameId} />
-					<LobbyPlayers gameId={gameId} usernames={usernames} />
+					<LobbyPlayers usernames={usernames} />
 				</div>
 			)}
 		</div>

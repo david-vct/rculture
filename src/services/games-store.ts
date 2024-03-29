@@ -45,18 +45,29 @@ export async function createGame() {
 	return gameRef.id
 }
 
+/**
+ * Update data from an existing game
+ * @param id - Game id
+ * @param data - Object on filepath format ["a.b":c]
+ * @returns
+ */
 export async function updateGame(id: string, data: object): Promise<StoreResponse<Game>> {
+	// Verify game existance
 	if (!(await existsGameById(id))) {
 		return getErrorStoreResponse(`Game ${id} does not exist`)
 	}
-
-	// Update data
+	// Update game data
 	console.log(`Update Game : ${id} ${data}`)
 	const gameRef = doc(db, `games/${id}`)
 	await updateDoc(gameRef, data)
 	return getSuccessStoreResponse([])
 }
 
+/**
+ * Verify game existance by fetching from db
+ * @param id
+ * @returns
+ */
 export async function existsGameById(id: string) {
 	const response = await findGameById(id)
 	return response.success
@@ -64,7 +75,13 @@ export async function existsGameById(id: string) {
 
 /* Domain methods */
 
+/**
+ * Starts game by finishing the setup
+ * @param id
+ * @returns
+ */
 export async function startGame(id: string) {
+	// TODO: Add setup logic
 	const response = await updateGame(id, { ["isSetup"]: true })
 	return response
 }

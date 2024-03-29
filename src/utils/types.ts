@@ -2,7 +2,7 @@ import { z } from "zod"
 
 // Questions Schemas
 const QuestionBaseSchema = z.object({
-	title: z.string().min(1).max(30),
+	title: z.string().min(1).max(100),
 	rating: z.object({
 		like: z.number(),
 		dislike: z.number(),
@@ -19,7 +19,7 @@ export const SimpleQuestionSchema = QuestionBaseSchema.extend({
 })
 
 export const CompleteQuestionSchema = QuestionBaseSchema.extend({
-	description: z.string().min(1),
+	description: z.string().min(1).max(250),
 	answers: z.array(z.string().trim()).min(1).max(10),
 })
 
