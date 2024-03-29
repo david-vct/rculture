@@ -51,8 +51,8 @@ export async function updateGame(id: string, data: object): Promise<StoreRespons
 	}
 
 	// Update data
+	console.log(`Update Game : ${id} ${data}`)
 	const gameRef = doc(db, `games/${id}`)
-	// await setDoc(gameRef, data, { merge: true })
 	await updateDoc(gameRef, data)
 	return getSuccessStoreResponse([])
 }
@@ -65,7 +65,7 @@ export async function existsGameById(id: string) {
 /* Domain methods */
 
 export async function startGame(id: string) {
-	const response = await updateGame(id, { isSetup: true })
+	const response = await updateGame(id, { ["isSetup"]: true })
 	return response
 }
 

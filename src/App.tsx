@@ -4,6 +4,7 @@ import { Home } from "./pages/Home"
 import { QuestionCreator } from "./pages/QuestionCreator/QuestionCreator"
 import { GameController } from "./pages/game/GameController"
 import { Oups } from "./pages/Oups"
+import { TestsPage } from "./pages/TestsPage"
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 					<Route path="/questions" element={<QuestionCreator />} />
 					<Route path="/games/:gameId" element={<GameController />} />
 					<Route path="/error" element={<Oups />} />
+					<Route path="/tests" element={<TestsPage />} />
 				</Routes>
 			</Router>
 		</div>

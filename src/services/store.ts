@@ -9,7 +9,9 @@ import { StoreResponse } from "../utils/types"
  */
 export async function findDataByQuery(q: Query, schema: ZodType): Promise<StoreResponse<z.infer<typeof schema>>> {
 	// Get documnet from db
+	console.log("View doc : " + q)
 	const data = await getDocs(q)
+
 	// Format data
 	return getSnapshotData(data, schema)
 }
