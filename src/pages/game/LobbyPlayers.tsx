@@ -1,16 +1,18 @@
+import { GameUser } from "../../utils/types"
+
 type LobbyPlayersProps = {
-	gameId: string
-	usernames: string[]
+	usernames: Record<string, GameUser>
 }
 
 export const LobbyPlayers = (props: LobbyPlayersProps) => {
+	const userIds = Object.keys(props.usernames)
+
 	return (
 		<div>
 			<h2>Joueurs</h2>
-			<div>Game id : {props.gameId}</div>
 			<ul>
-				{props.usernames.map((username) => (
-					<li>{username}</li>
+				{userIds.map((id) => (
+					<li key={id}>{props.usernames[id].name}</li>
 				))}
 			</ul>
 		</div>
