@@ -3,7 +3,7 @@ import { LobbySettings } from "./LobbySettings"
 import { LobbyPlayers } from "./LobbyPlayers"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { addPlayerToGame, listenGame, updateGameUserAnswers } from "../../services/games-store"
+import { addPlayerToGame, listenGame, updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
 import { getSnapshotData } from "../../services/store"
 import { Game, GameSchema, GameState, Question, StoreResponse } from "../../utils/types"
 import { GameQuestion } from "./GameQuestion"
@@ -85,7 +85,6 @@ export const GameController = () => {
 
 		// Reviwing state
 		else {
-			// TODO: reviwing state
 			updateGameUserAnswers(game.id, getUserInfo().id, answers).then((response) => {
 				if (!response.success) {
 					console.error(response.error)
@@ -95,6 +94,18 @@ export const GameController = () => {
 				}
 			})
 		}
+	}
+
+	const handleReviewCompleted = (reviews: Record<string, Record<string, boolean>>) => {
+		updateGameUserReviews(game.id, getUserInfo().id, reviews).then((response) => {
+			if (!response.success) {
+				console.error(response.error)
+				navigate("/error/")
+			} else {
+				setGameState(GameState.END)
+				console.log("Game end!!")
+			}
+		})
 	}
 
 	if (gameId === undefined) {
@@ -115,7 +126,7 @@ export const GameController = () => {
 			) : gameState === GameState.PLAYING ? (
 				<GameQuestion question={questions[questionIndex]} sendAnswer={handleAnswer} />
 			) : gameState === GameState.REVIEWING ? (
-				<GameReview game={game} />
+				<GameReview game={game} sendReviews={handleReviewCompleted} />
 			) : (
 				<div>Jeu fini</div>
 			)}
