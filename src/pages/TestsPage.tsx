@@ -1,13 +1,10 @@
-import { useState } from "react"
-import { findQuestionById } from "../services/questions-store"
+import { findQuestionByTags } from "../services/questions-store"
 
 export const TestsPage = () => {
-	const [questionId, setQuestionId] = useState("")
-
-	function find() {
-		findQuestionById(questionId).then((response) => {
+	function action() {
+		findQuestionByTags(["histoire", "enigme"]).then((response) => {
 			if (response.success) {
-				console.log("Docs nb : " + response.data.length)
+				console.log(response.data)
 			} else {
 				console.error(response.error)
 			}
@@ -16,8 +13,7 @@ export const TestsPage = () => {
 
 	return (
 		<div>
-			<input placeholder="id" onChange={(e) => setQuestionId(e.target.value)} />
-			<button onClick={find}>Find</button>
+			<button onClick={action}>Action</button>
 		</div>
 	)
 }

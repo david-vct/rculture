@@ -15,6 +15,7 @@ import { getErrorStoreResponse, getSuccessStoreResponse, initializeEmptyGameData
 import { findDataByQuery } from "./store"
 import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
+import { findQuestionByTags } from "./questions-store"
 
 const gamesRef = collection(db, "games")
 
@@ -80,9 +81,18 @@ export async function existsGameById(id: string) {
  * @param id
  * @returns
  */
-export async function startGame(id: string) {
-	// TODO: Add setup logic
-	const response = await updateGame(id, { ["isSetup"]: true })
+export async function startGame(id: string, tags: string[], nbQuestions: number) {
+	const questionResponse = await findQuestionByTags(tags, nbQuestions)
+	if (!questionResponse.success) {
+		return questionResponse
+	}
+
+	const data = {
+		["isSetup"]: true,
+		["questions"]: questionResponse.data,
+	}
+
+	const response = await updateGame(id, data)
 	return response
 }
 

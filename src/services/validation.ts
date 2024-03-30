@@ -1,7 +1,7 @@
-import { Question, QuestionSchema, StoreResponse } from "../utils/types"
+import { QuestionData, QuestionDataSchema, StoreResponse } from "../utils/types"
 
-export function isValideQuestion(question: Question) {
-	const questionParsed = QuestionSchema.safeParse(question)
+export function isValideQuestion(question: QuestionData) {
+	const questionParsed = QuestionDataSchema.safeParse(question)
 	if (!questionParsed.success) {
 		console.error(questionParsed.error)
 	}

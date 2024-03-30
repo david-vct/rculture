@@ -8,7 +8,7 @@ export const LobbyPlayers = (props: LobbyPlayersProps) => {
 			<h2>Joueurs</h2>
 			<ul>
 				{props.usernames.map((username) => (
-					<li>{username}</li>
+					<li key={username}>{username}</li>
 				))}
 			</ul>
 		</div>

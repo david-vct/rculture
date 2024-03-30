@@ -1,52 +1,6 @@
 import { z } from "zod"
 
-// Questions Schemas
-const QuestionBaseSchema = z.object({
-	title: z.string().min(1).max(100),
-	rating: z.object({
-		like: z.number(),
-		dislike: z.number(),
-	}),
-	difficulty: z.object({
-		win: z.number(),
-		lose: z.number(),
-	}),
-	tags: z.array(z.string()),
-})
-
-export const SimpleQuestionSchema = QuestionBaseSchema.extend({
-	answers: z.array(z.string().trim()).min(1).max(10),
-})
-
-export const CompleteQuestionSchema = QuestionBaseSchema.extend({
-	description: z.string().min(1).max(250),
-	answers: z.array(z.string().trim()).min(1).max(10),
-})
-
-export const ChoiceQuestionSchema = QuestionBaseSchema.extend({
-	choices: z.array(z.string()).min(2).max(10),
-	answers: z.array(z.number().min(0).max(9)).min(1).max(10),
-})
-
-export const ImageQuestionSchema = QuestionBaseSchema.extend({
-	imageUrl: z.string().url().min(1),
-	answers: z.array(z.string().trim()).min(1).max(10),
-})
-
-export const QuestionSchema = z.union([
-	SimpleQuestionSchema,
-	CompleteQuestionSchema,
-	ChoiceQuestionSchema,
-	ImageQuestionSchema,
-])
-
-// Questions Types
-export type SimpleQuestion = z.infer<typeof SimpleQuestionSchema>
-export type CompleteQuestion = z.infer<typeof CompleteQuestionSchema>
-export type ChoiceQuestion = z.infer<typeof ChoiceQuestionSchema>
-export type ImageQuestion = z.infer<typeof ImageQuestionSchema>
-
-export type Question = z.infer<typeof QuestionSchema>
+/* Questions Types */
 
 export enum QuestionType {
 	SIMPLE,
@@ -55,13 +9,36 @@ export enum QuestionType {
 	IMAGE,
 }
 
+export const QuestionDataSchema = z.object({
+	title: z.string().min(1).max(100),
+	body: z.array(z.string()),
+	answers: z.array(z.string().trim()).min(1).max(10),
+	tags: z.array(z.string()),
+	type: z.nativeEnum(QuestionType),
+	rating: z.object({
+		like: z.number(),
+		dislike: z.number(),
+	}),
+	difficulty: z.object({
+		win: z.number(),
+		lose: z.number(),
+	}),
+})
+
+export const QuestionSchema = QuestionDataSchema.extend({
+	id: z.string(),
+})
+
+export type QuestionData = z.infer<typeof QuestionDataSchema>
+export type Question = z.infer<typeof QuestionSchema>
+
 // Games types
 export const GameDataSchema = z.object({
 	name: z.string().toUpperCase().length(4),
 	isSetup: z.boolean(),
 	users: z.record(z.string(), z.string()),
 	tags: z.array(z.string()),
-	questions: z.array(z.string()),
+	questions: z.array(QuestionSchema),
 	questionIndex: z.number(),
 })
 

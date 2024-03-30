@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { createQuestion } from "../../services/questions-store"
 import { initializeEmptyQuestionFields, splitAndTrim } from "../../utils/utils"
+import { QuestionType } from "../../utils/types"
 
 export const ChoiceQuestionCreator = () => {
 	const [title, setTitle] = useState("")
@@ -10,14 +11,21 @@ export const ChoiceQuestionCreator = () => {
 
 	const createQuestionHandler = () => {
 		const question = {
+			type: QuestionType.CHOICE,
 			title,
-			choices: splitAndTrim(choices),
+			body: splitAndTrim(choices),
 			answers: splitAndTrim(answers),
 			tags: splitAndTrim(tags),
 			...initializeEmptyQuestionFields(),
 		}
 
-		createQuestion(question)
+		createQuestion(question).then((response) => {
+			if (!response.success) {
+				console.error(response.error)
+			} else {
+				console.log(response.data)
+			}
+		})
 	}
 
 	return (

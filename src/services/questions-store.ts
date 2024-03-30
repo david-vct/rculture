@@ -1,6 +1,6 @@
 import { Query, addDoc, collection, documentId, limit, query, where } from "firebase/firestore"
 import { db } from "../config/firebase"
-import { Question, QuestionSchema, StoreResponse } from "../utils/types"
+import { Question, QuestionData, QuestionSchema, StoreResponse } from "../utils/types"
 import { isValideQuestion } from "./validation"
 import { findDataByQuery } from "./store"
 import { getErrorStoreResponse, getSuccessStoreResponse } from "../utils/utils"
@@ -25,7 +25,7 @@ export async function findQuestionById(questionId: string) {
 	return response
 }
 
-export async function createQuestion(question: Question) {
+export async function createQuestion(question: QuestionData) {
 	if (!isValideQuestion(question)) {
 		return getErrorStoreResponse("Not valide question")
 	}
