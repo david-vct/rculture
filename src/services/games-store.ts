@@ -11,7 +11,12 @@ import {
 	where,
 } from "firebase/firestore"
 import { db } from "../config/firebase"
-import { getErrorStoreResponse, getSuccessStoreResponse, initializeEmptyGameData } from "../utils/utils"
+import {
+	getErrorStoreResponse,
+	getSuccessStoreResponse,
+	initializeEmptyGameData,
+	initializeGameUser,
+} from "../utils/utils"
 import { findDataByQuery } from "./store"
 import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
@@ -97,11 +102,17 @@ export async function startGame(id: string, tags: string[], nbQuestions: number)
 }
 
 export async function addPlayerToGame(gameId: string, userInfo: UserInfo) {
-	const response = await updateGame(gameId, { ["users." + userInfo.id]: userInfo.name })
+	const gameUser = initializeGameUser(userInfo.name)
+	const response = await updateGame(gameId, { ["users." + userInfo.id]: gameUser })
 	return response
 }
 
-export async function listenGame(id: string, callback: (snapshot: QuerySnapshot) => void) {
+export async function updateGameUserAnswers(gameId: string, userId: string, answers: Record<string, string>) {
+	const response = await updateGame(gameId, { ["users." + userId + ".answers"]: answers })
+	return response
+}
+
+export function listenGame(id: string, callback: (snapshot: QuerySnapshot) => void) {
 	const q = query(gamesRef, where(documentId(), "==", id))
-	onSnapshot(q, callback)
+	return onSnapshot(q, callback)
 }

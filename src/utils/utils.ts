@@ -1,4 +1,4 @@
-import { GameData, StoreResponse, UserInfo } from "./types"
+import { GameData, GameUser, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -27,6 +27,14 @@ export function initializeEmptyGameData(): GameData {
 		tags: [],
 		questions: [],
 		questionIndex: 0,
+	}
+}
+
+export function initializeGameUser(name: string): GameUser {
+	return {
+		name,
+		answers: {},
+		reviews: {},
 	}
 }
 
