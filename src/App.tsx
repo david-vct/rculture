@@ -5,11 +5,13 @@ import { QuestionCreator } from "./pages/QuestionCreator/QuestionCreator"
 import { GameController } from "./pages/game/GameController"
 import { Oups } from "./pages/Oups"
 import { TestsPage } from "./pages/TestsPage"
+import { Navbar } from "./components/Navbar"
 
 function App() {
 	return (
 		<div className="App">
 			<Router>
+				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/signin" element={<Auth />} />
