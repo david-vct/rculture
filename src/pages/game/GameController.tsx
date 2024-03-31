@@ -10,6 +10,7 @@ import { GameQuestion } from "./GameQuestion"
 import { getUserInfo } from "../../services/authentication"
 import { isEqual } from "lodash"
 import { GameReview } from "./GameReview"
+import { GameScoreBoard } from "./GameScoreBoard"
 
 export const GameController = () => {
 	const [gameState, setGameState] = useState(GameState.WAITING)
@@ -128,7 +129,7 @@ export const GameController = () => {
 			) : gameState === GameState.REVIEWING ? (
 				<GameReview game={game} sendReviews={handleReviewCompleted} />
 			) : (
-				<div>Jeu fini</div>
+				<GameScoreBoard game={game} />
 			)}
 		</div>
 	)

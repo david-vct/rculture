@@ -35,6 +35,7 @@ export function initializeGameUser(name: string): GameUser {
 		name,
 		answers: {},
 		reviews: {},
+		scores: {},
 	}
 }
 

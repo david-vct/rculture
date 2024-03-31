@@ -12,6 +12,7 @@ export const GameUserSchema = z.object({
 	name: z.string(),
 	answers: z.record(z.string(), z.string()),
 	reviews: z.record(z.string(), z.record(z.string(), z.boolean())),
+	scores: z.record(z.string(), z.number()),
 })
 
 export type UserInfo = z.infer<typeof UserInfoSchema>
