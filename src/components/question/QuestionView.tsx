@@ -7,15 +7,19 @@ type QuestionViewProps = {
 
 export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewProps) => {
 	return (
-		<div>
-			<h2>{question.title}</h2>
-			<div>
+		<div className="flex flex-col space-y-4">
+			<h2 className="text-2xl">{question.title}</h2>
+			<div className="space-x-2">
+				{question.tags.map((tag) => (
+					<span className="badge badge-outline cursor-default">{tag}</span>
+				))}
+			</div>
+			<div className="">
 				{question.body.map((text) => (
 					<div>{text}</div>
 				))}
 			</div>
-			{isAnswerVisible && <div>{JSON.stringify(question.answers)}</div>}
-			<div>{JSON.stringify(question.tags)}</div>
+			{isAnswerVisible && <div>{question.answers.map((answer, index) => (index === 0 ? answer : ", " + answer))}</div>}
 		</div>
 	)
 }

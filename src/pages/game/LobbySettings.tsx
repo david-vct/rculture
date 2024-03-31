@@ -26,12 +26,24 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 	}
 
 	return (
-		<div>
-			<h2>Parametres</h2>
+		<div className="flex flex-col space-y-4">
+			<h2 className="text-2xl">Parametres</h2>
 			<div>Game id : {props.gameId}</div>
-			<input placeholder="Tags" onChange={(e) => setTags(e.target.value)} />
-			<input placeholder="Nombre de questions" type="number" value={nbQuestion} onChange={setNbQuestionsHandler} />
-			<button onClick={startGameHandler}>Commencer</button>
+			<input
+				className="input input-bordered rounded-full"
+				placeholder="Tags"
+				onChange={(e) => setTags(e.target.value)}
+			/>
+			<input
+				className="input input-bordered rounded-full"
+				placeholder="Nombre de questions"
+				type="number"
+				value={nbQuestion}
+				onChange={setNbQuestionsHandler}
+			/>
+			<button className="btn btn-primary rounded-full" onClick={startGameHandler}>
+				Commencer
+			</button>
 		</div>
 	)
 }

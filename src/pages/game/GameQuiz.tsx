@@ -22,6 +22,7 @@ export const GameQuiz = (props: GameQuizProps) => {
 
 		// Next question
 		if (questionIndex < questions.length - 1) {
+			setAnswer("")
 			setQuestionIndex(questionIndex + 1)
 		}
 
@@ -32,11 +33,17 @@ export const GameQuiz = (props: GameQuizProps) => {
 	}
 
 	return (
-		<div>
-			<h2>Quiz</h2>
+		<div className="flex flex-col w-2xl space-y-4">
 			<QuestionView question={questions[questionIndex]} isAnswerVisible={false} />
-			<input placeholder="Réponse" onChange={(e) => setAnswer(e.target.value)} />
-			<button onClick={handleAnswer}>Repondre</button>
+			<input
+				className="input input-bordered rounded-full"
+				placeholder="Réponse"
+				value={answer}
+				onChange={(e) => setAnswer(e.target.value)}
+			/>
+			<button className="btn btn-primary rounded-full" onClick={handleAnswer}>
+				Repondre
+			</button>
 		</div>
 	)
 }

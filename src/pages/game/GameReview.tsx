@@ -42,11 +42,14 @@ export const GameReview = (props: GameReviewProps) => {
 	}
 
 	return (
-		<div>
+		<div className="flex flex-col space-y-4">
 			<h2>Question Review</h2>
 			<QuestionView question={question} />
+			<div className="divider"></div>
 			<AnswerReview username={user.name} answer={user.answers[question.id]} sendIsRightAnswer={isRightAnswer} />
-			<button onClick={goNext}>Suivant</button>
+			<button className="btn btn-neutral rounded-full self-center" onClick={goNext}>
+				Suivant
+			</button>
 		</div>
 	)
 }

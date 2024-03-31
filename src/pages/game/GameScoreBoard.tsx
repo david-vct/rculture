@@ -10,10 +10,9 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 	const userIds = Object.keys(props.game.users)
 
 	return (
-		<div>
+		<div className="w-full">
 			<h1>Score Board</h1>
-			<div>{JSON.stringify(props.game)}</div>
-			<table>
+			<table className="table">
 				<thead>
 					<tr>
 						<th>Question / User</th>

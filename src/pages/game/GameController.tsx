@@ -1,4 +1,3 @@
-import { Navbar } from "../../components/Navbar"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
 import { updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
@@ -58,17 +57,18 @@ export const GameController = () => {
 	}
 
 	return (
-		<div>
-			<Navbar />
-			{gameState === GameState.WAITING ? (
-				<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
-			) : gameState === GameState.PLAYING ? (
-				<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
-			) : gameState === GameState.REVIEWING ? (
-				<GameReview game={game} sendReviews={handleReviewCompleted} />
-			) : (
-				<GameScoreBoard game={game} />
-			)}
+		<div className="min-h-screen bg-base-200 bg-base-200 flex flex-col justify-center items-center">
+			<div className="p-8 rounded-box max-w-4xl bg-base-100">
+				{gameState === GameState.WAITING ? (
+					<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
+				) : gameState === GameState.PLAYING ? (
+					<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
+				) : gameState === GameState.REVIEWING ? (
+					<GameReview game={game} sendReviews={handleReviewCompleted} />
+				) : (
+					<GameScoreBoard game={game} />
+				)}
+			</div>
 		</div>
 	)
 }

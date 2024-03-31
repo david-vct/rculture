@@ -28,11 +28,14 @@ export const SimpleQuestionCreator = () => {
 	}
 
 	return (
-		<div>
-			<input placeholder="Question" onChange={(e) => setTitle(e.target.value)} />
-			<input placeholder="Réponses" onChange={(e) => setAnswers(e.target.value)} />
-			<input placeholder="Tags" onChange={(e) => setTags(e.target.value)} />
-			<button onClick={createQuestionHandler}>Créer</button>
+		<div className="flex flex-col space-y-4">
+			<input className="input input-bordered" placeholder="Question" onChange={(e) => setTitle(e.target.value)} />
+			<textarea className="textarea textarea-bordered" placeholder="Déscription"></textarea>
+			<input className="input input-bordered" placeholder="Réponses" onChange={(e) => setAnswers(e.target.value)} />
+			<input className="input input-bordered" placeholder="Tags" onChange={(e) => setTags(e.target.value)} />
+			<button className="btn btn-primary rounded-full" onClick={createQuestionHandler}>
+				Créer
+			</button>
 		</div>
 	)
 }
