@@ -2,19 +2,20 @@ import { Question } from "../../utils/types"
 
 type QuestionViewProps = {
 	question: Question
+	isAnswerVisible?: boolean
 }
 
-export const QuestionView = (props: QuestionViewProps) => {
+export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewProps) => {
 	return (
 		<div>
-			<h2>{props.question.title}</h2>
+			<h2>{question.title}</h2>
 			<div>
-				{props.question.body.map((text) => (
+				{question.body.map((text) => (
 					<div>{text}</div>
 				))}
 			</div>
-			<div>{JSON.stringify(props.question.answers)}</div>
-			<div>{JSON.stringify(props.question.tags)}</div>
+			{isAnswerVisible && <div>{JSON.stringify(question.answers)}</div>}
+			<div>{JSON.stringify(question.tags)}</div>
 		</div>
 	)
 }

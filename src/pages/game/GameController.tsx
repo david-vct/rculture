@@ -1,103 +1,51 @@
 import { Navbar } from "../../components/Navbar"
-import { LobbySettings } from "./LobbySettings"
-import { LobbyPlayers } from "./LobbyPlayers"
 import { useNavigate, useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { addPlayerToGame, listenGame, updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
-import { getSnapshotData } from "../../services/store"
-import { Game, GameSchema, GameState, Question, StoreResponse } from "../../utils/types"
-import { GameQuestion } from "./GameQuestion"
+import { useState } from "react"
+import { updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
+import { Game, GameState } from "../../utils/types"
 import { getUserInfo } from "../../services/authentication"
-import { isEqual } from "lodash"
 import { GameReview } from "./GameReview"
 import { GameScoreBoard } from "./GameScoreBoard"
+import { GameQuiz } from "./GameQuiz"
+import { LobbyRoom } from "./LobbyRoom"
 
 export const GameController = () => {
-	const [gameState, setGameState] = useState(GameState.WAITING)
-	const [questionIndex, setQuestionIndex] = useState(0)
-	const [usernames, setUsernames] = useState({})
-	const [questions, setQuestions] = useState([] as Question[])
-	const [answers, setAnswers] = useState({} as Record<string, string>)
-	const [game, setGame] = useState({} as Game)
-
 	const { gameId } = useParams()
+	const [gameState, setGameState] = useState(GameState.WAITING)
+	const [game, setGame] = useState({} as Game)
 	const navigate = useNavigate()
 
-	console.log("Rendering app")
+	console.log("Game " + GameState[gameState])
 
-	// Game state contoller
-	useEffect(() => {
-		if (gameId === undefined) {
-			console.error("Undefined game id")
-			navigate("/error/")
-			return
-		}
+	// Parameter game id validation
+	if (gameId === undefined) {
+		console.error("Undefined game id")
+		navigate("/error/")
+		return
+	}
 
-		// Add user to game
-		addPlayerToGame(gameId, getUserInfo())
+	// Lobby room controller
+	const handleGameStart = (game: Game) => {
+		setGame(game)
+		setGameState(GameState.PLAYING)
+	}
 
-		// TODO: Handle stop listening game
-		listenGame(gameId, (snapshot) => {
-			console.log("Snapshot listener")
-			const response: StoreResponse<Game> = getSnapshotData(snapshot, GameSchema)
-
-			// Error handler
+	// Game quiz controller
+	const handleQuizCompeted = (answers: Record<string, string>) => {
+		// Update user answers in the database
+		updateGameUserAnswers(game.id, getUserInfo().id, answers).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
 				navigate("/error/")
-				return
-			}
-			if (response.data.length !== 1) {
-				console.error("Number of games must be 1")
-				navigate("/error/")
-				return
-			}
-
-			// Get this game
-			const game = response.data.shift()!
-
-			// Set game as state
-			setGame(game)
-
-			// Update users if needed
-			if (!isEqual(usernames, game.users)) {
-				setUsernames(Object.values(game.users))
-			}
-
-			// Start the game play
-			if (game.isSetup) {
-				setQuestions(game.questions)
-				setGameState(GameState.PLAYING)
+			} else {
+				setGameState(GameState.REVIEWING)
 			}
 		})
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-	// Game play controller
-	const handleAnswer = (answer: string) => {
-		// Add answer to answers
-		answers[questions[questionIndex].id] = answer
-		setAnswers(answers)
-
-		// Next question
-		if (questionIndex < questions.length - 1) {
-			setQuestionIndex(questionIndex + 1)
-		}
-
-		// Reviwing state
-		else {
-			updateGameUserAnswers(game.id, getUserInfo().id, answers).then((response) => {
-				if (!response.success) {
-					console.error(response.error)
-					navigate("/error/")
-				} else {
-					setGameState(GameState.REVIEWING)
-				}
-			})
-		}
 	}
 
+	// Game review controller
 	const handleReviewCompleted = (reviews: Record<string, Record<string, boolean>>) => {
+		// Update user reviews in the database
 		updateGameUserReviews(game.id, getUserInfo().id, reviews).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
@@ -109,23 +57,13 @@ export const GameController = () => {
 		})
 	}
 
-	if (gameId === undefined) {
-		console.error("Undefined game id")
-		navigate("/error/")
-		return
-	}
-
 	return (
 		<div>
 			<Navbar />
 			{gameState === GameState.WAITING ? (
-				<div>
-					<h1>Nouvelle partie</h1>
-					<LobbySettings gameId={gameId} />
-					<LobbyPlayers usernames={usernames} />
-				</div>
+				<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
 			) : gameState === GameState.PLAYING ? (
-				<GameQuestion question={questions[questionIndex]} sendAnswer={handleAnswer} />
+				<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
 			) : gameState === GameState.REVIEWING ? (
 				<GameReview game={game} sendReviews={handleReviewCompleted} />
 			) : (
