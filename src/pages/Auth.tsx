@@ -1,16 +1,10 @@
-import { useEffect, useState } from "react"
-import { getUserInfo, logout, signIn, signInWithGoogle } from "../services/authentication"
+import { useState } from "react"
+import { logout, signIn, signInWithGoogle } from "../services/authentication"
 import { Navbar } from "../components/Navbar"
 
 export const Auth = () => {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-	const [username, setUsername] = useState("")
-
-	useEffect(() => {
-		const userInfo = getUserInfo()
-		setUsername(userInfo.name)
-	}, [])
 
 	return (
 		<div className="hero min-h-screen bg-base-200">
