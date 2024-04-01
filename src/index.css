@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes background-animation {
+	0% {
+		transform: scale(0) translateX(0) rotate(-20deg);
+		filter: blur(0rem);
+		opacity: 0;
+	}
+
+	50% {
+		filter: blur(0);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(2) translateX(0) rotate(10deg);
+		filter: blur(0px);
+		opacity: 0;
+	}
+}

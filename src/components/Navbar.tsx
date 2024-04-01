@@ -5,10 +5,12 @@ export const Navbar = () => {
 	return (
 		<div className="navbar fixed top-0">
 			<div className="flex-1 space-x-4">
+				<Link to={"/"}>
+					<div>
+						<img className="object-contain w-12" src="/rculture-logo.png" />
+					</div>
+				</Link>
 				<div className="menu menu-horizontal bg-base-100 rounded-box">
-					<li>
-						<Link to={"/"}>Home</Link>
-					</li>
 					<li>
 						<Link to={"/questions"}>Créer des questions</Link>
 					</li>

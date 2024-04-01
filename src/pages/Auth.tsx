@@ -16,7 +16,7 @@ export const Auth = () => {
 							</label>
 							<input
 								type="email"
-								className="input input-bordered"
+								className="input input-bordered rounded-full"
 								placeholder="email"
 								onChange={(e) => setEmail(e.target.value)}
 							/>
@@ -26,21 +26,21 @@ export const Auth = () => {
 								<span className="label-text">Password</span>
 							</label>
 							<input
-								className="input input-bordered"
+								className="input input-bordered rounded-full"
 								placeholder="password"
 								type="password"
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</div>
 						<div className="form-control mt-6">
-							<button className="btn btn-neutral" onClick={() => signIn(email, password)}>
+							<button className="btn btn-neutral rounded-full" onClick={() => signIn(email, password)}>
 								Sign In
 							</button>
 						</div>
 
 						<div className="divider">ou</div>
 
-						<button className="btn btn-primary" onClick={signInWithGoogle}>
+						<button className="btn btn-primary rounded-full" onClick={signInWithGoogle}>
 							Sign in with Google
 						</button>
 
