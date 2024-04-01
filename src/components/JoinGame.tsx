@@ -15,18 +15,16 @@ export const JoinGame = () => {
 	}
 
 	return (
-		<div className="flex flex-col space-y-4">
-			<div>
-				<div className="join">
-					<input
-						className="input input-bordered rounded-full join-item"
-						placeholder="Code"
-						onChange={(e) => setJoinGamemId(e.target.value)}
-					/>
-					<button className="btn btn-primary rounded-r-full join-item" onClick={joinGameHandler}>
-						Rejoindre partie
-					</button>
-				</div>
+		<div className="flex flex-col items-center space-y-4">
+			<div className="join rounded-full">
+				<input
+					className="input input-bordered min-w-40 join-item"
+					placeholder="Code"
+					onChange={(e) => setJoinGamemId(e.target.value)}
+				/>
+				<button className="btn btn-primary join-item" onClick={joinGameHandler}>
+					Rejoindre partie
+				</button>
 			</div>
 			<div>
 				<button className="btn btn-secondary rounded-full" onClick={newGameHandler}>

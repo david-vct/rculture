@@ -3,9 +3,9 @@ import { ThemeSwitch } from "./ThemeSwitch"
 
 export const Navbar = () => {
 	return (
-		<div className="navbar bg-base-100 fixed top-0 px-4">
-			<div className="navbar-start space-x-4">
-				<div className="menu menu-vertical lg:menu-horizontal bg-base-100 rounded-box">
+		<div className="navbar fixed top-0">
+			<div className="flex-1 space-x-4">
+				<div className="menu menu-horizontal bg-base-100 rounded-box">
 					<li>
 						<Link to={"/"}>Home</Link>
 					</li>
@@ -18,7 +18,7 @@ export const Navbar = () => {
 				</div>
 			</div>
 
-			<div className="navbar-end">
+			<div className="flex-none px-2">
 				<ThemeSwitch />
 			</div>
 		</div>
