@@ -22,7 +22,7 @@ export const ThemeSwitch = () => {
 	}
 
 	return (
-		<label className="swap swap-rotate">
+		<label className="swap swap-rotate hover:bg-primary rounded-full p-2">
 			{/* this hidden checkbox controls the state */}
 			<input type="checkbox" className="theme-controller" checked={theme === Theme.DARK} onChange={handleThemeSwitch} />
 
