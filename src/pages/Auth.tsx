@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { logout, signIn, signInWithGoogle } from "../services/authentication"
-import { Navbar } from "../components/Navbar"
 
 export const Auth = () => {
 	const [email, setEmail] = useState("")
@@ -8,9 +7,8 @@ export const Auth = () => {
 
 	return (
 		<div className="hero min-h-screen bg-base-200">
-			<Navbar />
-			<div className="hero-content flex-col lg:flex-row-reverse">
-				<div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+			<div className="hero-content w-2/3 max-w-md flex-col lg:flex-row-reverse">
+				<div className="card shrink-0 w-full shadow-2xl bg-base-100">
 					<div className="card-body">
 						<div className="form-control">
 							<label className="label">
