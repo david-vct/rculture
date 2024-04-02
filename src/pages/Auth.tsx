@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { logout, signIn, signInWithGoogle } from "../services/authentication"
+import { logout, signInWithEmail, signInWithGoogle } from "../services/authentication"
 
 export const Auth = () => {
 	const [email, setEmail] = useState("")
@@ -33,7 +33,7 @@ export const Auth = () => {
 							/>
 						</div>
 						<div className="form-control mt-6">
-							<button className="btn btn-neutral rounded-full" onClick={() => signIn(email, password)}>
+							<button className="btn btn-neutral rounded-full" onClick={() => signInWithEmail(email, password)}>
 								Sign In
 							</button>
 						</div>
