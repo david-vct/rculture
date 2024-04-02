@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { createGame } from "../services/games-store"
 import { useState } from "react"
 import { signIn } from "../services/authentication"
+import { Toast } from "./Toast"
+import { toast } from "react-toastify"
 
 export const JoinGame = () => {
 	const [joinGameId, setJoinGamemId] = useState("")
@@ -10,16 +12,30 @@ export const JoinGame = () => {
 
 	const joinGameHandler = async () => {
 		// Sign in new user
-		await signIn(name)
+		const response = await signIn(name)
+		if (!response.success) {
+			return toast.error("Nom invalide")
+		}
+
 		// Join game
 		navigate(`/games/${joinGameId}`)
 	}
+
 	const newGameHandler = async () => {
 		// Login user
-		await signIn(name)
+		const response = await signIn(name)
+		if (!response.success) {
+			return toast.error("Nom invalide")
+		}
+
 		// Create new game
-		const newGameId = await createGame()
-		navigate(`/games/${newGameId}`)
+		const gameResponse = await createGame()
+		if (!gameResponse.success) {
+			return toast.error("Problème lors de la création de la partie")
+		}
+
+		// Join game
+		navigate(`/games/${gameResponse.data[0]}`)
 	}
 
 	return (
@@ -43,6 +59,7 @@ export const JoinGame = () => {
 			<button className="btn btn-secondary self-end rounded-full" onClick={newGameHandler}>
 				Nouvelle partie
 			</button>
+			<Toast />
 		</div>
 	)
 }

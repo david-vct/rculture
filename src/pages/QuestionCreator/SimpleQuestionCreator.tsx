@@ -3,6 +3,8 @@ import { createQuestion } from "../../services/questions-store"
 import { initializeEmptyQuestionFields, splitAndTrim } from "../../utils/utils"
 import { QuestionType } from "../../utils/types"
 import { QuestionBodyInput } from "./QuestionBodyInput"
+import { toast } from "react-toastify"
+import { Toast } from "../../components/Toast"
 
 export const SimpleQuestionCreator = () => {
 	const [title, setTitle] = useState("")
@@ -22,9 +24,9 @@ export const SimpleQuestionCreator = () => {
 
 		createQuestion(question).then((response) => {
 			if (!response.success) {
-				console.error(response.error)
+				toast.error("La question n'a pas pu être créée")
 			} else {
-				console.log(response.data)
+				toast.success("La question a été créée")
 			}
 		})
 	}
@@ -61,6 +63,7 @@ export const SimpleQuestionCreator = () => {
 					Créer question
 				</button>
 			</div>
+			<Toast />
 		</div>
 	)
 }
