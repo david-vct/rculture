@@ -1,14 +1,28 @@
-import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth"
+import { createUserWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut } from "firebase/auth"
 import { auth, googleAuthProvider } from "../config/firebase"
 import { UserInfo } from "../utils/types"
 import { initializeAnonymousUserInfo } from "../utils/utils"
+
+export async function signIn(name: string) {
+	try {
+		const response = await signInAnonymously(auth)
+		const userInfo = {
+			id: response.user.uid,
+			name: name,
+			isAuth: true,
+		}
+		storeUserInfo(userInfo)
+	} catch (error) {
+		console.error(error)
+	}
+}
 
 /**
  * Sign in app with an email and password
  * @param email
  * @param password
  */
-export async function signIn(email: string, password: string) {
+export async function signInWithEmail(email: string, password: string) {
 	try {
 		await createUserWithEmailAndPassword(auth, email, password)
 	} catch (e) {
