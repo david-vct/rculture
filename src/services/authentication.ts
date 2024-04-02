@@ -1,19 +1,30 @@
 import { createUserWithEmailAndPassword, signInWithPopup, signInAnonymously, signOut } from "firebase/auth"
 import { auth, googleAuthProvider } from "../config/firebase"
 import { UserInfo } from "../utils/types"
-import { initializeAnonymousUserInfo } from "../utils/utils"
+import { getErrorStoreResponse, getSuccessStoreResponse, initializeAnonymousUserInfo } from "../utils/utils"
 
+/**
+ * Sing in app anonymously
+ * @param name
+ * @returns
+ */
 export async function signIn(name: string) {
+	if (name.trim() === "") {
+		return getErrorStoreResponse("Le nom ne peut pas être vide")
+	}
+
 	try {
-		const response = await signInAnonymously(auth)
+		const userCredentials = await signInAnonymously(auth)
 		const userInfo = {
-			id: response.user.uid,
-			name: name,
+			id: userCredentials.user.uid,
+			name,
 			isAuth: true,
 		}
 		storeUserInfo(userInfo)
+		return getSuccessStoreResponse([userInfo])
 	} catch (error) {
 		console.error(error)
+		return getErrorStoreResponse(error)
 	}
 }
 
@@ -22,11 +33,19 @@ export async function signIn(name: string) {
  * @param email
  * @param password
  */
-export async function signInWithEmail(email: string, password: string) {
+export async function signInWithEmail(email: string, name: string, password: string) {
 	try {
-		await createUserWithEmailAndPassword(auth, email, password)
-	} catch (e) {
-		console.error(e)
+		const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+		const userInfo = {
+			id: userCredentials.user.uid,
+			name,
+			isAuth: true,
+		}
+		storeUserInfo(userInfo)
+		return getSuccessStoreResponse([userInfo])
+	} catch (error) {
+		console.error(error)
+		return getErrorStoreResponse(error)
 	}
 }
 
@@ -35,15 +54,17 @@ export async function signInWithEmail(email: string, password: string) {
  */
 export async function signInWithGoogle() {
 	try {
-		const response = await signInWithPopup(auth, googleAuthProvider)
+		const userCredentials = await signInWithPopup(auth, googleAuthProvider)
 		const userInfo = {
-			id: response.user.uid,
-			name: response.user.displayName ?? "Anonymous",
+			id: userCredentials.user.uid,
+			name: userCredentials.user.displayName ?? "Anonymous",
 			isAuth: true,
 		}
 		storeUserInfo(userInfo)
-	} catch (e) {
-		console.error(e)
+		return getSuccessStoreResponse([userInfo])
+	} catch (error) {
+		console.error(error)
+		return getErrorStoreResponse(error)
 	}
 }
 
@@ -57,7 +78,9 @@ export async function logout() {
 		storeUserInfo(initializeAnonymousUserInfo())
 	} catch (error) {
 		console.error(error)
+		return getErrorStoreResponse(error)
 	}
+	return getSuccessStoreResponse([])
 }
 
 /**

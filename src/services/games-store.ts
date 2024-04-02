@@ -51,7 +51,7 @@ export async function findGameById(id: string) {
 export async function createGame() {
 	const newGame = initializeEmptyGameData()
 	const gameRef = await addDoc(gamesRef, newGame)
-	return gameRef.id
+	return getSuccessStoreResponse([gameRef.id])
 }
 
 /**
