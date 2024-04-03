@@ -35,13 +35,18 @@ export const GameQuiz = (props: GameQuizProps) => {
 	return (
 		<div className="flex flex-col w-2xl space-y-4">
 			<QuestionView question={questions[questionIndex]} isAnswerVisible={false} />
-			<input
-				className="input input-bordered rounded-full"
-				placeholder="Réponse"
-				value={answer}
-				onChange={(e) => setAnswer(e.target.value)}
-			/>
-			<button className="btn btn-primary rounded-full" onClick={handleAnswer}>
+			<div className="form-control">
+				<label className="label">
+					<span className="label-text">Réponse</span>
+				</label>
+				<input
+					className="input input-bordered rounded-full"
+					placeholder="Euh..."
+					value={answer}
+					onChange={(e) => setAnswer(e.target.value)}
+				/>
+			</div>
+			<button className="btn btn-primary self-end rounded-full" onClick={handleAnswer}>
 				Repondre
 			</button>
 		</div>

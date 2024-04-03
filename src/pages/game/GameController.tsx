@@ -57,8 +57,8 @@ export const GameController = () => {
 	}
 
 	return (
-		<div className="min-h-screen bg-base-200 bg-base-200 flex flex-col justify-center items-center">
-			<div className="p-8 rounded-box max-w-4xl bg-base-100">
+		<div className="min-h-screen flex flex-col justify-center items-center">
+			<div className="w-full sm:w-auto px-4 py-8 sm:px-8 rounded-box">
 				{gameState === GameState.WAITING ? (
 					<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
 				) : gameState === GameState.PLAYING ? (
