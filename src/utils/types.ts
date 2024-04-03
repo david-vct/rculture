@@ -57,6 +57,7 @@ export const QuestionDataSchema = z.object({
 		win: z.number(),
 		lose: z.number(),
 	}),
+	randomIndex: z.number(),
 })
 
 export const QuestionSchema = QuestionDataSchema.extend({

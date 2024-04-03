@@ -20,7 +20,7 @@ import {
 import { findDataByQuery } from "./store"
 import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
-import { findQuestionByTags } from "./questions-store"
+import { findRandomQuestionsByTags } from "./questions-store"
 
 const gamesRef = collection(db, "games")
 
@@ -91,7 +91,7 @@ export async function existsGameById(id: string) {
  */
 export async function startGame(id: string, tags: string[], nbQuestions: number) {
 	// Get questions for the game
-	const questionResponse = await findQuestionByTags(tags, nbQuestions)
+	const questionResponse = await findRandomQuestionsByTags(tags, nbQuestions)
 	if (!questionResponse.success) {
 		return questionResponse
 	}

@@ -1,6 +1,7 @@
 import { Query, QuerySnapshot, getDocs } from "firebase/firestore"
 import { ZodType, z } from "zod"
 import { StoreResponse } from "../utils/types"
+import { getErrorStoreResponse } from "../utils/utils"
 
 /**
  * Get data by a query from de db and formats the data
@@ -8,9 +9,14 @@ import { StoreResponse } from "../utils/types"
  * @returns data formated
  */
 export async function findDataByQuery(q: Query, schema: ZodType): Promise<StoreResponse<z.infer<typeof schema>>> {
-	// Get documnet from db
-	console.log("View doc : " + q)
-	const data = await getDocs(q)
+	let data
+
+	try {
+		// Get document from db
+		data = await getDocs(q)
+	} catch (e) {
+		return getErrorStoreResponse(e)
+	}
 
 	// Format data
 	return getSnapshotData(data, schema)

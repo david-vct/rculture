@@ -1,8 +1,8 @@
-import { findQuestionByTags } from "../services/questions-store"
+import { findRandomQuestionsByTags } from "../services/questions-store"
 
 export const TestsPage = () => {
 	function action() {
-		findQuestionByTags(["histoire", "enigme"]).then((response) => {
+		findRandomQuestionsByTags(["HISTORY", "GEOGRAPHY", "ENIGMA", "DILEMMA"], 6).then((response) => {
 			if (response.success) {
 				console.log(response.data)
 			} else {
@@ -12,8 +12,10 @@ export const TestsPage = () => {
 	}
 
 	return (
-		<div>
-			<button onClick={action}>Action</button>
+		<div className="w-full min-h-screen flex flex-col items-center justify-center">
+			<button className="btn" onClick={action}>
+				Action
+			</button>
 		</div>
 	)
 }

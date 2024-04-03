@@ -12,7 +12,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 	const [tags, setTags] = useState([] as string[])
 	const [nbQuestions, setNbQuestions] = useState(10)
 
-	const startGameHandler = () => {
+	const handleGameStart = () => {
 		// Verify tags
 		if (tags.length === 0) {
 			return toast.error("Veuillez sélectionner au moins un thème")
@@ -65,7 +65,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 				</label>
 				<TagSelector onChange={(tags) => handleTagSelectorChange(tags)} />
 			</div>
-			<button className="btn btn-primary self-end rounded-full" onClick={startGameHandler}>
+			<button className="btn btn-primary self-end rounded-full" onClick={handleGameStart}>
 				Commencer
 			</button>
 			<Toast />
