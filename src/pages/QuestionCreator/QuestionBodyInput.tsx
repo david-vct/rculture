@@ -28,22 +28,25 @@ export const QuestionBodyInput = (props: QuestionBodyInputProps) => {
 				{Array.from({ length: nbElements }).map((_, index) => (
 					<textarea
 						key={index}
-						className="textarea textarea-bordered resize-none"
+						className="textarea textarea-bordered resize-none rounded-3xl"
 						placeholder="Déscription ou choix"
 						onChange={(e) => handleQuestionChange(index, e.target.value)}
 					></textarea>
 				))}
 			</div>
 			<div className="pt-2">
-				<button className="btn btn-sm btn-neutral rounded-full mr-2" onClick={() => setNbElements(nbElements + 1)}>
-					+
+				<button
+					className="btn btn-sm btn-neutral btn-outline rounded-full mr-2 font-bold"
+					onClick={() => setNbElements(nbElements + 1)}
+				>
+					&#43;
 				</button>
 				<button
-					className="btn btn-sm btn-neutral rounded-full"
+					className="btn btn-sm btn-neutral btn-outline rounded-full font-bold"
 					disabled={nbElements === 0}
 					onClick={handleElementRemove}
 				>
-					-
+					&#8722;
 				</button>
 			</div>
 		</div>

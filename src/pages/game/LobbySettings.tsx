@@ -1,21 +1,21 @@
 import { useState } from "react"
 import { startGame } from "../../services/games-store"
-import { splitAndTrim } from "../../utils/utils"
 import { Toast } from "../../components/Toast"
 import { toast } from "react-toastify"
+import { TagSelector } from "../../components/question/TagSelector"
 
 type LobbySettingsProps = {
 	gameId: string
 }
 
 export const LobbySettings = (props: LobbySettingsProps) => {
-	const [tags, setTags] = useState("")
+	const [tags, setTags] = useState([] as string[])
 	const [nbQuestions, setNbQuestions] = useState(10)
 
 	const startGameHandler = () => {
 		// Verify tags
-		if (splitAndTrim(tags).length === 0) {
-			return toast.error("Veuillez entrer au moins un thème")
+		if (tags.length === 0) {
+			return toast.error("Veuillez sélectionner au moins un thème")
 		}
 
 		// Verify number of questions
@@ -24,7 +24,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 		}
 
 		// Set up and start game with new settings
-		startGame(props.gameId, splitAndTrim(tags), nbQuestions).then((response) => {
+		startGame(props.gameId, tags, nbQuestions).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
 				toast.error("Erreur lors de le lancement du jeu")
@@ -37,6 +37,10 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 	const setNbQuestionsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = parseInt(e.target.value)
 		if (!isNaN(value)) setNbQuestions(value)
+	}
+
+	const handleTagSelectorChange = (tags: string[]) => {
+		setTags(tags)
 	}
 
 	return (
@@ -59,11 +63,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 				<label className="label">
 					<span className="label-text">Thèmes</span>
 				</label>
-				<input
-					className="input input-bordered rounded-full"
-					placeholder="histoire, enigme"
-					onChange={(e) => setTags(e.target.value)}
-				/>
+				<TagSelector onChange={(tags) => handleTagSelectorChange(tags)} />
 			</div>
 			<button className="btn btn-primary self-end rounded-full" onClick={startGameHandler}>
 				Commencer

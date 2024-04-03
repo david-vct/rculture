@@ -27,6 +27,22 @@ export enum QuestionType {
 	IMAGE,
 }
 
+export enum QuestionTag {
+	CULTUREG = "culture g",
+	CULTUREP = "pop culture",
+	HISTORY = "histoire",
+	GEOGRAPHY = "géographie",
+	SCIENCE = "science",
+	PHYSICS = "physique",
+	BIOLOGY = "biologie",
+	MATHS = "mathématiqes",
+	SPORT = "sport",
+	ART = "art",
+	MUSIC = "musique",
+	ENIGME = "énigme",
+	DILEMMA = "dilemme",
+}
+
 export const QuestionDataSchema = z.object({
 	title: z.string().min(1).max(100),
 	body: z.array(z.string()),
