@@ -8,7 +8,7 @@ export const LobbyPlayers = (props: LobbyPlayersProps) => {
 	const userIds = Object.keys(props.users)
 
 	return (
-		<div className="space-y-4">
+		<div className="flex flex-col space-y-4">
 			<h2 className="text-2xl">Joueurs</h2>
 			<ul>
 				{userIds.map((id) => (
