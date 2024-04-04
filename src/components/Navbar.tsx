@@ -3,7 +3,7 @@ import { ThemeSwitch } from "./ThemeSwitch"
 
 export const Navbar = () => {
 	return (
-		<div className="navbar fixed">
+		<div className="navbar bg-base-200">
 			<div className="flex-1 space-x-4">
 				<Link to={"/"}>
 					<div>

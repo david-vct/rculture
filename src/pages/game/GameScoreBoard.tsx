@@ -10,7 +10,7 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 	const userIds = Object.keys(props.game.users)
 
 	return (
-		<div className="w-full">
+		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
 			<h1>Score Board</h1>
 			<table className="table">
 				<thead>
@@ -30,7 +30,7 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 								<td key={id}>{scores.individual[id][question.id]}</td>
 							))}
 							<td>
-								{scores.global.byQuestion[question.id].win} / {scores.global.byQuestion[question.id].lose}
+								{scores.global.byQuestion[question.id].win} | {scores.global.byQuestion[question.id].lose}
 							</td>
 						</tr>
 					))}
