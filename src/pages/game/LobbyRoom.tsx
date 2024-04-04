@@ -64,9 +64,9 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 	}, [])
 
 	return (
-		<div>
+		<div className="w-full lg:w-3/4 max-w-7xl px-4 py-8 lg:px-8 space-y-4 rounded-box">
 			<h1 className="text-5xl font-bold pb-16">Nouvelle partie</h1>
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<LobbySettings gameId={props.gameId} />
 				<LobbyPlayers users={users} />
 			</div>

@@ -20,9 +20,9 @@ export const AnswerReview = (props: AnswerReviewProps) => {
 	}, [props.isRight])
 
 	return (
-		<div className="grid grid-cols-4 gap-4">
-			<div className="col-span-3 align-middle self-center">{props.username + " : " + props.answer}</div>
-			<div className="join join-horizontal rounded-full grow-0">
+		<div className="flex flex-row space-x-4">
+			<div className="flex-1 align-middle self-center">{props.username + " : " + props.answer}</div>
+			<div className="join join-horizontal flex-none rounded-full grow-0">
 				<button
 					className={"btn btn-sm btn-error join-item text-xl " + (isRight ? "btn-outline" : "")}
 					onClick={() => handleClick(false)}

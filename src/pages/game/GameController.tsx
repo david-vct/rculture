@@ -58,17 +58,15 @@ export const GameController = () => {
 
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center">
-			<div className="w-full sm:w-auto px-4 py-8 sm:px-8 rounded-box">
-				{gameState === GameState.WAITING ? (
-					<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
-				) : gameState === GameState.PLAYING ? (
-					<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
-				) : gameState === GameState.REVIEWING ? (
-					<GameReview game={game} sendReviews={handleReviewCompleted} />
-				) : (
-					<GameScoreBoard game={game} />
-				)}
-			</div>
+			{gameState === GameState.WAITING ? (
+				<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
+			) : gameState === GameState.PLAYING ? (
+				<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
+			) : gameState === GameState.REVIEWING ? (
+				<GameReview game={game} sendReviews={handleReviewCompleted} />
+			) : (
+				<GameScoreBoard game={game} />
+			)}
 		</div>
 	)
 }

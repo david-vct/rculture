@@ -52,7 +52,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 					<span className="label-text">Nombre de questions</span>
 				</label>
 				<input
-					className="input input-bordered rounded-full"
+					className="input input-bordered max-w-sm rounded-full"
 					placeholder="Nombre de questions"
 					type="number"
 					value={nbQuestions}
