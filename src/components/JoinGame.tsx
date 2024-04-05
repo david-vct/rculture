@@ -56,7 +56,7 @@ export const JoinGame = () => {
 					Rejoindre partie
 				</button>
 			</div>
-			<button className="btn btn-secondary self-end rounded-full" onClick={newGameHandler}>
+			<button className="btn btn-outline self-end rounded-full" onClick={newGameHandler}>
 				Nouvelle partie
 			</button>
 			<Toast />

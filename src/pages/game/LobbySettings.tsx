@@ -45,8 +45,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 
 	return (
 		<div className="flex flex-col space-y-4">
-			<h2 className="text-2xl">Parametres</h2>
-			<div>Code : {props.gameId}</div>
+			<h2 className="text-2xl">Paramètres</h2>
 			<div className="form-control">
 				<label className="label">
 					<span className="label-text">Nombre de questions</span>
