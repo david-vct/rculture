@@ -39,6 +39,7 @@ export enum QuestionTag {
 	SPORT = "sport",
 	ART = "art",
 	MUSIC = "musique",
+	LITERATURE = "littérature",
 	ENIGME = "énigme",
 	DILEMMA = "dilemme",
 }
@@ -100,3 +101,28 @@ export const StoreResponseSchema = z.discriminatedUnion("success", [
 ])
 
 export type StoreResponse<DataType> = { success: true; data: DataType[] } | { success: false; error: unknown }
+
+/* Statistics types */
+
+export const AppStatisticsSchema = z.object({
+	questions: z.object({
+		quantity: z.object({
+			total: z.number(),
+			CULTUREG: z.number(),
+			CULTUREP: z.number(),
+			HISTORY: z.number(),
+			GEOGRAPHY: z.number(),
+			SCIENCE: z.number(),
+			PHYSICS: z.number(),
+			BIOLOGY: z.number(),
+			MATHS: z.number(),
+			SPORT: z.number(),
+			ART: z.number(),
+			MUSIC: z.number(),
+			ENIGME: z.number(),
+			DILEMMA: z.number(),
+		}),
+	}),
+})
+
+export type AppStatistics = z.infer<typeof AppStatisticsSchema>
