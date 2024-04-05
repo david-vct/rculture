@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { createGame } from "../services/games-store"
 import { useState } from "react"
-import { signIn } from "../services/authentication"
+import { getUserInfo, signIn } from "../services/authentication"
 import { Toast } from "./Toast"
 import { toast } from "react-toastify"
 
 export const JoinGame = () => {
 	const [joinGameId, setJoinGamemId] = useState("")
-	const [name, setName] = useState("")
+	const [name, setName] = useState(getUserInfo().isAuth ? getUserInfo().name : "")
 	const navigate = useNavigate()
 
 	const joinGameHandler = async () => {
@@ -56,7 +56,7 @@ export const JoinGame = () => {
 					Rejoindre partie
 				</button>
 			</div>
-			<button className="btn btn-secondary self-end rounded-full" onClick={newGameHandler}>
+			<button className="btn btn-outline self-end rounded-full" onClick={newGameHandler}>
 				Nouvelle partie
 			</button>
 			<Toast />

@@ -12,7 +12,7 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 	return (
 		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
 			<h1>Score Board</h1>
-			<table className="table">
+			<table className="table table-md">
 				<thead>
 					<tr>
 						<th>Question / User</th>

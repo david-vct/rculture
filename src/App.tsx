@@ -6,11 +6,13 @@ import { GameController } from "./pages/game/GameController"
 import { Oups } from "./pages/Oups"
 import { TestsPage } from "./pages/TestsPage"
 import { Navbar } from "./components/Navbar"
+import { Background } from "./components/background/Background"
 
 function App() {
 	return (
 		<div className="App">
 			<Router>
+				<Background />
 				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
