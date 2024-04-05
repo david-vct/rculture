@@ -1,13 +1,27 @@
 import { useMemo } from "react"
 import { Game } from "../../utils/types"
+import { useNavigate } from "react-router-dom"
 
 type GameScoreBoardProps = {
 	game: Game
+	onPlayAgain: () => void
 }
 
 export const GameScoreBoard = (props: GameScoreBoardProps) => {
 	const scores = useMemo(() => computeScores(props.game), [props.game])
 	const userIds = Object.keys(props.game.users)
+	userIds.sort((a, b) => scores.global.byUser[b] - scores.global.byUser[a])
+
+	const navigate = useNavigate()
+
+	const handlePlayAgain = () => {
+		// Send event to parent
+		props.onPlayAgain()
+	}
+
+	const handleGoHome = () => {
+		navigate("/")
+	}
 
 	return (
 		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
@@ -43,10 +57,34 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 					</tr>
 				</tbody>
 			</table>
+			<div className="flex flex-row justify-end space-x-4 pt-4">
+				<button className="btn btn-primary rounded-full" onClick={handlePlayAgain}>
+					Rejouer
+				</button>
+				<button className="btn btn-outline rounded-full" onClick={handleGoHome}>
+					Accueil
+				</button>
+			</div>
 		</div>
 	)
 }
 
+/**
+ * Compute final score of the game
+ * structure:
+ * 	- global:
+ * 		- byQuestion:
+ * 			- [questionId]:
+ * 				- win: [score]
+ * 				- lose: [score]
+ * 		- byUser:
+ * 			- [userId]: score
+ * 	- individual:
+ * 		- [userId]:
+ * 			- [questionId]: score
+ * @param game
+ * @returns
+ */
 function computeScores(game: Game) {
 	const scores = {
 		global: {

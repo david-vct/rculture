@@ -66,7 +66,7 @@ export async function updateGame(id: string, data: object): Promise<StoreRespons
 		return getErrorStoreResponse(`Game ${id} does not exist`)
 	}
 	// Update game data
-	console.log(`Update Game : ${id} ${data}`)
+	console.log(`  - Update Game : ${id} ${data}`)
 	const gameRef = doc(db, `games/${id}`)
 	await updateDoc(gameRef, data)
 	return getSuccessStoreResponse([])
@@ -83,6 +83,19 @@ export async function existsGameById(id: string) {
 }
 
 /* Domain methods */
+
+/**
+ * Reset game mantaining same id and same name
+ * @param id
+ * @param game
+ * @returns
+ */
+export async function resetGame(id: string, game: Game) {
+	const newGame = initializeEmptyGameData()
+	newGame.name = game.name
+	const response = await updateGame(id, newGame)
+	return response
+}
 
 /**
  * Starts game by finishing the setup

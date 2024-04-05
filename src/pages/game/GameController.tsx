@@ -1,20 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import { updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
+import { resetGame, updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
 import { Game, GameState } from "../../utils/types"
 import { getUserInfo } from "../../services/authentication"
 import { GameReview } from "./GameReview"
 import { GameScoreBoard } from "./GameScoreBoard"
 import { GameQuiz } from "./GameQuiz"
 import { LobbyRoom } from "./LobbyRoom"
+import { toast } from "react-toastify"
+import { Toast } from "../../components/Toast"
 
 export const GameController = () => {
 	const { gameId } = useParams()
 	const [gameState, setGameState] = useState(GameState.WAITING)
 	const [game, setGame] = useState({} as Game)
 	const navigate = useNavigate()
-
-	console.log("Game " + GameState[gameState])
 
 	// Parameter game id validation
 	if (gameId === undefined) {
@@ -35,7 +35,7 @@ export const GameController = () => {
 		updateGameUserAnswers(game.id, getUserInfo().id, answers).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
-				navigate("/error/")
+				toast.error("Problème lors de la synchronisation des réponses")
 			} else {
 				setGameState(GameState.REVIEWING)
 			}
@@ -48,10 +48,21 @@ export const GameController = () => {
 		updateGameUserReviews(game.id, getUserInfo().id, reviews).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
-				navigate("/error/")
+				toast.error("Problème lors de la synchronisation des notations")
 			} else {
 				setGameState(GameState.END)
-				console.log("Game end!!")
+			}
+		})
+	}
+
+	const handlePlayAgain = () => {
+		// Reset game
+		resetGame(game.id, game).then((response) => {
+			if (!response.success) {
+				console.error(response.error)
+				toast.error("Problème lors de la réinitialisation de la partie")
+			} else {
+				setGameState(GameState.WAITING)
 			}
 		})
 	}
@@ -65,8 +76,9 @@ export const GameController = () => {
 			) : gameState === GameState.REVIEWING ? (
 				<GameReview game={game} sendReviews={handleReviewCompleted} />
 			) : (
-				<GameScoreBoard game={game} />
+				<GameScoreBoard game={game} onPlayAgain={handlePlayAgain} />
 			)}
+			<Toast />
 		</div>
 	)
 }

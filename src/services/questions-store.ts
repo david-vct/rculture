@@ -53,7 +53,6 @@ export async function findQuestionByTags(tags: string[], nbQuestions: number = 1
  */
 export async function findRandomQuestionsByTags(tags: string[], nbQuestions: number = 10) {
 	const randomIndex = createQuestionRandomIndex()
-	console.log("Index : " + randomIndex)
 
 	if (tags.length === 0) {
 		return getErrorStoreResponse("Tags must not be empty")
@@ -97,6 +96,10 @@ export async function findRandomQuestionsByTags(tags: string[], nbQuestions: num
 
 		// Merge and shuffle
 		response.data = shuffle([...response.data, ...response2.data])
+
+		if (response.data.length === 0) {
+			return getErrorStoreResponse("Aucune question trouvée")
+		}
 	}
 
 	return response
