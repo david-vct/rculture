@@ -20,7 +20,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 	const navigate = useNavigate()
 
 	const handleGameUpdate = (snapshot: QuerySnapshot) => {
-		console.log("Snapshot listener")
+		console.log("  - Snapshot listener")
 
 		// Format as a game response
 		const response: StoreResponse<Game> = getSnapshotData(snapshot, GameSchema)
