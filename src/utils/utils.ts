@@ -1,5 +1,5 @@
 import { random } from "lodash"
-import { GameData, GameUser, StoreResponse, UserInfo } from "./types"
+import { GameData, GameUser, QuestionTag, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -41,6 +41,30 @@ export function initializeGameUser(name: string): GameUser {
 	}
 }
 
+export function initializeEmptyAppStatistics() {
+	return {
+		questions: {
+			quantity: {
+				total: 0,
+				CULTUREG: 0,
+				CULTUREP: 0,
+				HISTORY: 0,
+				GEOGRAPHY: 0,
+				SCIENCE: 0,
+				PHYSICS: 0,
+				BIOLOGY: 0,
+				MATHS: 0,
+				SPORT: 0,
+				ART: 0,
+				MUSIC: 0,
+				LITTERATURE: 0,
+				ENIGME: 0,
+				DILEMMA: 0,
+			},
+		},
+	}
+}
+
 export function initializeEmptyQuestionData() {}
 
 export function getSuccessStoreResponse<DataType>(data: DataType[]): StoreResponse<DataType> {
@@ -71,4 +95,8 @@ export const RANDOM_INDEX_MAX = 10000
 export function createQuestionRandomIndex() {
 	const randomIndex = random(0, RANDOM_INDEX_MAX, false)
 	return randomIndex
+}
+
+export function getQuestionTagValue(tag: string) {
+	return Object.values(QuestionTag)[Object.keys(QuestionTag).indexOf(tag)]
 }

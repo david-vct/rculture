@@ -1,4 +1,5 @@
-import { Question, QuestionTag } from "../../utils/types"
+import { Question } from "../../utils/types"
+import { getQuestionTagValue } from "../../utils/utils"
 
 type QuestionViewProps = {
 	question: Question
@@ -12,7 +13,7 @@ export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewP
 			<div className="space-x-2 pb-4">
 				{question.tags.map((tag, index) => (
 					<span key={"tag-" + index} className="badge badge-outline cursor-default">
-						{Object.values(QuestionTag)[Object.keys(QuestionTag).indexOf(tag)]}
+						{getQuestionTagValue(tag)}
 					</span>
 				))}
 			</div>

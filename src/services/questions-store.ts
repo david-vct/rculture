@@ -5,6 +5,7 @@ import { isValideQuestion } from "./validation"
 import { findDataByQuery } from "./store"
 import { createQuestionRandomIndex, getErrorStoreResponse, getSuccessStoreResponse } from "../utils/utils"
 import { shuffle } from "lodash"
+import { updateStatisticsByQuestion } from "./statistics-store"
 
 // References to the collections
 const questionsRef = collection(db, "questions")
@@ -31,12 +32,26 @@ export async function createQuestion(question: QuestionData) {
 		return getErrorStoreResponse("Not valide question")
 	}
 
-	const data = await addDoc(questionsRef, question)
+	let data
+	try {
+		data = await addDoc(questionsRef, question)
+		// Update global app statistics
+		await updateStatisticsByQuestion(question)
+	} catch (e) {
+		return getErrorStoreResponse(e)
+	}
+
 	return getSuccessStoreResponse([data.id])
 }
 
 /* Domain methods */
 
+/**
+ * Finds questions filtering by tags
+ * @param tags - Array of tags
+ * @param nbQuestions - Number max of questions to return
+ * @returns
+ */
 export async function findQuestionByTags(tags: string[], nbQuestions: number = 10) {
 	const q = query(questionsRef, where("tags", "array-contains-any", tags), limit(nbQuestions))
 

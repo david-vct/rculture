@@ -52,7 +52,14 @@ export const GameReview = (props: GameReviewProps) => {
 
 	return (
 		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
-			<h2>Question Review</h2>
+			<div className="flex flex-col items-center pb-16">
+				<div>{questionIndex + 1 + " / " + props.game.questions.length}</div>
+				<progress
+					className="progress progress-primary"
+					value={questionIndex + 1}
+					max={props.game.questions.length}
+				></progress>
+			</div>
 			<div className="felx flex-col space-y-4 pb-4">
 				<QuestionView question={question} />
 				<div className="divider"></div>

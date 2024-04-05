@@ -34,6 +34,10 @@ export const GameQuiz = (props: GameQuizProps) => {
 
 	return (
 		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 rounded-box space-y-4">
+			<div className="flex flex-col items-center pb-16">
+				<div>{questionIndex + 1 + " / " + questions.length}</div>
+				<progress className="progress progress-primary" value={questionIndex + 1} max={questions.length}></progress>
+			</div>
 			<QuestionView question={questions[questionIndex]} isAnswerVisible={false} />
 			<div className="form-control">
 				<label className="label">

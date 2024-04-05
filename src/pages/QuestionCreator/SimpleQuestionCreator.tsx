@@ -29,6 +29,7 @@ export const SimpleQuestionCreator = () => {
 			if (!response.success) {
 				toast.error("La question n'a pas pu être créée")
 			} else {
+				resetForm()
 				toast.success("La question a été créée")
 			}
 		})
@@ -36,6 +37,13 @@ export const SimpleQuestionCreator = () => {
 
 	const handleTagChange = (tags: string[]) => {
 		setTags(tags)
+	}
+
+	const resetForm = () => {
+		setTitle("")
+		setBody([])
+		setAnswers("")
+		setTags([])
 	}
 
 	return (
@@ -47,6 +55,7 @@ export const SimpleQuestionCreator = () => {
 				<input
 					className="input input-bordered rounded-full"
 					placeholder="Question"
+					value={title}
 					onChange={(e) => setTitle(e.target.value)}
 				/>
 			</div>
@@ -63,6 +72,7 @@ export const SimpleQuestionCreator = () => {
 				<input
 					className="input input-bordered rounded-full"
 					placeholder="Réponses"
+					value={answers}
 					onChange={(e) => setAnswers(e.target.value)}
 				/>
 			</div>
