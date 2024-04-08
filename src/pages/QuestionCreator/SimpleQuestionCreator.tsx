@@ -6,6 +6,7 @@ import { QuestionBodyInput } from "./QuestionBodyInput"
 import { toast } from "react-toastify"
 import { Toast } from "../../components/Toast"
 import { TagSelector } from "../../components/question/TagSelector"
+import { getUserInfo } from "../../services/authentication"
 
 export const SimpleQuestionCreator = () => {
 	const [title, setTitle] = useState("")
@@ -14,6 +15,11 @@ export const SimpleQuestionCreator = () => {
 	const [tags, setTags] = useState([] as string[])
 
 	const handleQuestionSubmit = () => {
+		const userInfo = getUserInfo()
+		if (!userInfo.isAuth) {
+			return toast.error("Veuillez vous connecter pour créer une question")
+		}
+
 		// Initialize question with selected values
 		const question = {
 			type: QuestionType.SIMPLE,
@@ -21,6 +27,7 @@ export const SimpleQuestionCreator = () => {
 			body,
 			answers: splitAndTrim(answers),
 			tags,
+			userId: userInfo.id,
 			...initializeEmptyQuestionFields(),
 		}
 

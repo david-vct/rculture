@@ -18,6 +18,7 @@ export function initializeEmptyQuestionFields() {
 		rating: { like: 0, dislike: 0 },
 		difficulty: { win: 0, lose: 0 },
 		randomIndex: createQuestionRandomIndex(),
+		creationDate: getTodayDate(),
 	}
 }
 
@@ -29,6 +30,7 @@ export function initializeEmptyGameData(): GameData {
 		tags: [],
 		questions: [],
 		questionIndex: 0,
+		creationDate: getTodayDate(),
 	}
 }
 
@@ -99,4 +101,12 @@ export function createQuestionRandomIndex() {
 
 export function getQuestionTagValue(tag: string) {
 	return Object.values(QuestionTag)[Object.keys(QuestionTag).indexOf(tag)]
+}
+
+/**
+ * Create a date string for today on YYYY-MM-DD format
+ * @returns
+ */
+export function getTodayDate() {
+	return new Date().toISOString().split("T")[0]
 }
