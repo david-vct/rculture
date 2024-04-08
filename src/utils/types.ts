@@ -59,6 +59,8 @@ export const QuestionDataSchema = z.object({
 		lose: z.number(),
 	}),
 	randomIndex: z.number(),
+	userId: z.string(),
+	creationDate: z.string(),
 })
 
 export const QuestionSchema = QuestionDataSchema.extend({
@@ -84,6 +86,7 @@ export const GameDataSchema = z.object({
 	tags: z.array(z.string()),
 	questions: z.array(QuestionSchema),
 	questionIndex: z.number(),
+	creationDate: z.string(),
 })
 
 export const GameSchema = GameDataSchema.extend({

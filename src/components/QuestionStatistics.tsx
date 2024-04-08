@@ -31,16 +31,16 @@ export const QuestionStatistics = () => {
 	}
 
 	return (
-		<div className="flex flex-row space-x-2">
-			<span key="total" className="badge badge-lg badge-outline cursor-default">
+		<div className="flex flex-row flex-wrap justify-center">
+			<span key="total" className="badge badge-lg badge-outline cursor-default m-1">
 				{quantities["total"] + " questions !"}
 			</span>
 			{orderedTags.slice(0, 3).map((tag) => (
-				<span key={tag} className="badge badge-lg badge-outline cursor-default">
+				<span key={tag} className="badge badge-lg badge-outline cursor-default m-1">
 					{quantities[tag] + " en " + getQuestionTagValue(tag)}
 				</span>
 			))}
-			<span key="others" className="badge badge-lg badge-outline cursor-default">
+			<span key="others" className="badge badge-lg badge-outline cursor-default m-1">
 				...
 			</span>
 		</div>
