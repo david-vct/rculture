@@ -14,9 +14,6 @@ export const Navbar = () => {
 					<li>
 						<Link to={"/questions"}>Créer des questions</Link>
 					</li>
-					<li>
-						<Link to={"/signin"}>Connexion</Link>
-					</li>
 				</div>
 			</div>
 
