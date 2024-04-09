@@ -28,7 +28,7 @@ export const QuestionBodyInput = (props: QuestionBodyInputProps) => {
 				{Array.from({ length: nbElements }).map((_, index) => (
 					<textarea
 						key={index}
-						className="textarea textarea-bordered resize-none rounded-3xl"
+						className="textarea textarea-bordered resize-y rounded-md leading-normal min-h-32"
 						placeholder="Déscription ou choix"
 						onChange={(e) => handleQuestionChange(index, e.target.value)}
 					></textarea>

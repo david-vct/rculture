@@ -7,6 +7,10 @@ type QuestionViewProps = {
 }
 
 export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewProps) => {
+	console.log(question)
+	console.log(question.body[0])
+	console.log(question.body[0].replace("\\n", "\n"))
+
 	return (
 		<div className="flex flex-col">
 			<h2 className="text-2xl pb-1">{question.title}</h2>
@@ -17,9 +21,11 @@ export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewP
 					</span>
 				))}
 			</div>
-			<div className="pb-4">
+			<div className="mb-4 rounded-3xl bg-accent">
 				{question.body.map((text, index) => (
-					<div key={"body-" + index}>{text}</div>
+					<div className="m-2 p-4 bg-base-100 rounded-3xl whitespace-pre-line" key={"body-" + index}>
+						{text}
+					</div>
 				))}
 			</div>
 			{isAnswerVisible && <div>{question.answers.map((answer, index) => (index === 0 ? answer : ", " + answer))}</div>}
