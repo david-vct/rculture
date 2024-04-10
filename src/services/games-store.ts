@@ -18,7 +18,7 @@ import {
 	initializeGameUser,
 } from "../utils/utils"
 import { findDataByQuery } from "./store"
-import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
+import { Game, GameSchema, GameState, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
 import { findRandomQuestionsByTags } from "./questions-store"
 
@@ -117,7 +117,7 @@ export async function startGame(
 
 	// Update state and questions in game
 	const data = {
-		["isSetup"]: true,
+		["state"]: GameState.PLAYING,
 		["questions"]: questionResponse.data,
 		["answerDuration"]: answerDuration,
 		["reviewDuration"]: reviewDuration,
@@ -147,7 +147,10 @@ export async function addPlayerToGame(gameId: string, userInfo: UserInfo) {
  * @returns
  */
 export async function updateGameUserAnswers(gameId: string, userId: string, answers: Record<string, string>) {
-	const response = await updateGame(gameId, { ["users." + userId + ".answers"]: answers })
+	const response = await updateGame(gameId, {
+		["state"]: GameState.REVIEWING,
+		["users." + userId + ".answers"]: answers,
+	})
 	return response
 }
 
@@ -163,7 +166,7 @@ export async function updateGameUserReviews(
 	userId: string,
 	reviews: Record<string, Record<string, boolean>>
 ) {
-	const response = await updateGame(gameId, { ["users." + userId + ".reviews"]: reviews })
+	const response = await updateGame(gameId, { ["state"]: GameState.END, ["users." + userId + ".reviews"]: reviews })
 	return response
 }
 

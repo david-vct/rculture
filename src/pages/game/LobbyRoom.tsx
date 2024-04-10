@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { addPlayerToGame, listenGame } from "../../services/games-store"
 import { getUserInfo } from "../../services/authentication"
 import { useNavigate } from "react-router-dom"
-import { Game, GameSchema, StoreResponse } from "../../utils/types"
+import { Game, GameSchema, GameState, StoreResponse } from "../../utils/types"
 import { getSnapshotData } from "../../services/store"
 import { LobbySettings } from "./LobbySettings"
 import { LobbyPlayers } from "./LobbyPlayers"
@@ -46,7 +46,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 		}
 
 		// Start the game play if the game is ready
-		if (game.isSetup) {
+		if (game.state !== GameState.WAITING) {
 			// Unsubscribe from game listener
 			unsubscribe.current()
 			// Send event to parent

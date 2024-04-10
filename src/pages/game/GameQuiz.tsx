@@ -5,7 +5,7 @@ import { Countdown } from "../../components/Countdown"
 
 type GameQuizProps = {
 	game: Game
-	sendAnswers: (answers: Record<string, string>) => void
+	onComplete: (answers: Record<string, string>) => void
 }
 
 export const GameQuiz = (props: GameQuizProps) => {
@@ -29,7 +29,7 @@ export const GameQuiz = (props: GameQuizProps) => {
 
 		// Reviwing state
 		else {
-			props.sendAnswers(answers)
+			props.onComplete(answers)
 		}
 	}
 

@@ -26,7 +26,8 @@ export const GameController = () => {
 	// Lobby room controller
 	const handleGameStart = (game: Game) => {
 		setGame(game)
-		setGameState(GameState.PLAYING)
+		console.log(game)
+		setGameState(game.state)
 	}
 
 	// Game quiz controller
@@ -72,7 +73,7 @@ export const GameController = () => {
 			{gameState === GameState.WAITING ? (
 				<LobbyRoom gameId={gameId} onComplete={handleGameStart} />
 			) : gameState === GameState.PLAYING ? (
-				<GameQuiz game={game} sendAnswers={handleQuizCompeted} />
+				<GameQuiz game={game} onComplete={handleQuizCompeted} />
 			) : gameState === GameState.REVIEWING ? (
 				<GameReview game={game} sendReviews={handleReviewCompleted} />
 			) : (

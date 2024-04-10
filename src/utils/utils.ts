@@ -1,5 +1,5 @@
 import { random } from "lodash"
-import { GameData, GameUser, QuestionTag, StoreResponse, UserInfo } from "./types"
+import { GameData, GameState, GameUser, QuestionTag, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -25,7 +25,7 @@ export function initializeEmptyQuestionFields() {
 export function initializeEmptyGameData(): GameData {
 	return {
 		name: "XXXX",
-		isSetup: false,
+		state: GameState.WAITING,
 		users: {},
 		tags: [],
 		questions: [],
