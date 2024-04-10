@@ -26,7 +26,6 @@ export const GameController = () => {
 	// Lobby room controller
 	const handleGameStart = (game: Game) => {
 		setGame(game)
-		console.log(game)
 		setGameState(game.state)
 	}
 

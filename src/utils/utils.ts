@@ -110,5 +110,9 @@ export function getQuestionTagValue(tag: string) {
  * @returns
  */
 export function getTodayDate() {
-	return new Date().toISOString().split("T")[0]
+	return formatDate(new Date())
+}
+
+export function formatDate(date: Date) {
+	return date.toISOString().split("T")[0]
 }

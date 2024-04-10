@@ -3,6 +3,7 @@ import {
 	QuerySnapshot,
 	addDoc,
 	collection,
+	deleteDoc,
 	doc,
 	documentId,
 	onSnapshot,
@@ -12,6 +13,7 @@ import {
 } from "firebase/firestore"
 import { db } from "../config/firebase"
 import {
+	formatDate,
 	getErrorStoreResponse,
 	getSuccessStoreResponse,
 	initializeEmptyGameData,
@@ -80,6 +82,34 @@ export async function updateGame(id: string, data: object): Promise<StoreRespons
 export async function existsGameById(id: string) {
 	const response = await findGameById(id)
 	return response.success
+}
+
+export async function deleteGameById(id: string) {
+	const gameRef = doc(db, `games/${id}`)
+	await deleteDoc(gameRef)
+	return getSuccessStoreResponse([])
+}
+
+/**
+ * Delete games older than two day
+ */
+export async function deleteOldGames() {
+	// Create date two days ago
+	const twoDaysAgo = new Date()
+	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+	const creationDate = formatDate(twoDaysAgo)
+	// Query old games
+	const q = query(gamesRef, where("creationDate", "<=", creationDate))
+	const response = await findGameByQuery(q)
+	// Handle error
+	if (!response.success) {
+		return getErrorStoreResponse(response.error)
+	}
+	// Delete games
+	for (const game of response.data) {
+		await deleteGameById(game.id)
+	}
+	return getSuccessStoreResponse([])
 }
 
 /* Domain methods */
