@@ -7,10 +7,6 @@ type QuestionViewProps = {
 }
 
 export const QuestionView = ({ question, isAnswerVisible = true }: QuestionViewProps) => {
-	console.log(question)
-	console.log(question.body[0])
-	console.log(question.body[0].replace("\\n", "\n"))
-
 	return (
 		<div className="flex flex-col">
 			<h2 className="text-2xl pb-1">{question.title}</h2>

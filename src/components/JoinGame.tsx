@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { createGame } from "../services/games-store"
+import { createGame, deleteOldGames } from "../services/games-store"
 import { useState } from "react"
 import { getUserInfo, signIn } from "../services/authentication"
 import { Toast } from "./Toast"
@@ -26,6 +26,12 @@ export const JoinGame = () => {
 		const response = await signIn(name)
 		if (!response.success) {
 			return toast.error("Nom invalide")
+		}
+
+		// Delete old games
+		const deleteResponse = await deleteOldGames()
+		if (!deleteResponse.success) {
+			return toast.error("Problème lors de la suppression des anciennes parties")
 		}
 
 		// Create new game

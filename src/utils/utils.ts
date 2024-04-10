@@ -1,5 +1,5 @@
 import { random } from "lodash"
-import { GameData, GameUser, QuestionTag, StoreResponse, UserInfo } from "./types"
+import { GameData, GameState, GameUser, QuestionTag, StoreResponse, UserInfo } from "./types"
 
 /**
  * Get an anonymous userInfo
@@ -25,12 +25,14 @@ export function initializeEmptyQuestionFields() {
 export function initializeEmptyGameData(): GameData {
 	return {
 		name: "XXXX",
-		isSetup: false,
+		state: GameState.WAITING,
 		users: {},
 		tags: [],
 		questions: [],
 		questionIndex: 0,
 		creationDate: getTodayDate(),
+		answerDuration: 20,
+		reviewDuration: 20,
 	}
 }
 
@@ -108,5 +110,9 @@ export function getQuestionTagValue(tag: string) {
  * @returns
  */
 export function getTodayDate() {
-	return new Date().toISOString().split("T")[0]
+	return formatDate(new Date())
+}
+
+export function formatDate(date: Date) {
+	return date.toISOString().split("T")[0]
 }

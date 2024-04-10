@@ -81,12 +81,14 @@ export enum GameState {
 
 export const GameDataSchema = z.object({
 	name: z.string().toUpperCase().length(4),
-	isSetup: z.boolean(),
+	state: z.nativeEnum(GameState),
 	users: z.record(z.string(), GameUserSchema),
 	tags: z.array(z.string()),
 	questions: z.array(QuestionSchema),
 	questionIndex: z.number(),
 	creationDate: z.string(),
+	answerDuration: z.number(),
+	reviewDuration: z.number(),
 })
 
 export const GameSchema = GameDataSchema.extend({

@@ -11,6 +11,8 @@ type LobbySettingsProps = {
 export const LobbySettings = (props: LobbySettingsProps) => {
 	const [tags, setTags] = useState([] as string[])
 	const [nbQuestions, setNbQuestions] = useState(10)
+	const [answerDuration, setAnswerDuration] = useState(20)
+	const [reviewDuration, setReviewDuration] = useState(20)
 
 	const handleGameStart = () => {
 		// Verify tags
@@ -24,7 +26,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 		}
 
 		// Set up and start game with new settings
-		startGame(props.gameId, tags, nbQuestions).then((response) => {
+		startGame(props.gameId, tags, nbQuestions, answerDuration, reviewDuration).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
 				toast.error("Erreur lors de le lancement du jeu")
@@ -34,13 +36,21 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 		})
 	}
 
-	const setNbQuestionsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleNbQuestionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = parseInt(e.target.value)
 		if (!isNaN(value)) setNbQuestions(value)
 	}
 
 	const handleTagSelectorChange = (tags: string[]) => {
 		setTags(tags)
+	}
+
+	const handleAnswerDurationChange = (answerDuration: number) => {
+		setAnswerDuration(answerDuration)
+	}
+
+	const handleReviewDurationChange = (reviewDuration: number) => {
+		setReviewDuration(reviewDuration)
 	}
 
 	return (
@@ -55,16 +65,42 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 					placeholder="Nombre de questions"
 					type="number"
 					value={nbQuestions}
-					onChange={setNbQuestionsHandler}
+					onChange={handleNbQuestionsChange}
 				/>
 			</div>
-			<div className="form-control pb-4">
+			<div className="form-control">
 				<label className="label">
 					<span className="label-text">Thèmes</span>
 				</label>
 				<TagSelector onChange={(tags) => handleTagSelectorChange(tags)} />
 			</div>
-			<button className="btn btn-primary self-end rounded-full" onClick={handleGameStart}>
+			<div className="form-control">
+				<label>
+					<span className="label-text">Durée par réponse ({answerDuration} s)</span>
+				</label>
+				<input
+					type="range"
+					min={5}
+					max={60}
+					value={answerDuration}
+					className="range range-xs max-w-sm"
+					onChange={(e) => handleAnswerDurationChange(e.target.valueAsNumber)}
+				/>
+			</div>
+			<div className="form-control">
+				<label>
+					<span className="label-text">Durée par review ({reviewDuration} s)</span>
+				</label>
+				<input
+					type="range"
+					min={5}
+					max={60}
+					value={reviewDuration}
+					className="range range-xs max-w-sm"
+					onChange={(e) => handleReviewDurationChange(e.target.valueAsNumber)}
+				/>
+			</div>
+			<button className="btn btn-primary self-end mt-4 rounded-full" onClick={handleGameStart}>
 				Commencer
 			</button>
 			<Toast />

@@ -3,6 +3,7 @@ import {
 	QuerySnapshot,
 	addDoc,
 	collection,
+	deleteDoc,
 	doc,
 	documentId,
 	onSnapshot,
@@ -12,13 +13,14 @@ import {
 } from "firebase/firestore"
 import { db } from "../config/firebase"
 import {
+	formatDate,
 	getErrorStoreResponse,
 	getSuccessStoreResponse,
 	initializeEmptyGameData,
 	initializeGameUser,
 } from "../utils/utils"
 import { findDataByQuery } from "./store"
-import { Game, GameSchema, StoreResponse, UserInfo } from "../utils/types"
+import { Game, GameSchema, GameState, StoreResponse, UserInfo } from "../utils/types"
 import { validateStoreResponseLength } from "./validation"
 import { findRandomQuestionsByTags } from "./questions-store"
 
@@ -82,6 +84,34 @@ export async function existsGameById(id: string) {
 	return response.success
 }
 
+export async function deleteGameById(id: string) {
+	const gameRef = doc(db, `games/${id}`)
+	await deleteDoc(gameRef)
+	return getSuccessStoreResponse([])
+}
+
+/**
+ * Delete games older than two day
+ */
+export async function deleteOldGames() {
+	// Create date two days ago
+	const twoDaysAgo = new Date()
+	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+	const creationDate = formatDate(twoDaysAgo)
+	// Query old games
+	const q = query(gamesRef, where("creationDate", "<=", creationDate))
+	const response = await findGameByQuery(q)
+	// Handle error
+	if (!response.success) {
+		return getErrorStoreResponse(response.error)
+	}
+	// Delete games
+	for (const game of response.data) {
+		await deleteGameById(game.id)
+	}
+	return getSuccessStoreResponse([])
+}
+
 /* Domain methods */
 
 /**
@@ -102,7 +132,13 @@ export async function resetGame(id: string, game: Game) {
  * @param id
  * @returns
  */
-export async function startGame(id: string, tags: string[], nbQuestions: number) {
+export async function startGame(
+	id: string,
+	tags: string[],
+	nbQuestions: number,
+	answerDuration: number,
+	reviewDuration: number
+) {
 	// Get questions for the game
 	const questionResponse = await findRandomQuestionsByTags(tags, nbQuestions)
 	if (!questionResponse.success) {
@@ -110,7 +146,13 @@ export async function startGame(id: string, tags: string[], nbQuestions: number)
 	}
 
 	// Update state and questions in game
-	const data = { ["isSetup"]: true, ["questions"]: questionResponse.data }
+	const data = {
+		["state"]: GameState.PLAYING,
+		["questions"]: questionResponse.data,
+		["answerDuration"]: answerDuration,
+		["reviewDuration"]: reviewDuration,
+	}
+
 	const response = await updateGame(id, data)
 	return response
 }
@@ -135,7 +177,10 @@ export async function addPlayerToGame(gameId: string, userInfo: UserInfo) {
  * @returns
  */
 export async function updateGameUserAnswers(gameId: string, userId: string, answers: Record<string, string>) {
-	const response = await updateGame(gameId, { ["users." + userId + ".answers"]: answers })
+	const response = await updateGame(gameId, {
+		["state"]: GameState.REVIEWING,
+		["users." + userId + ".answers"]: answers,
+	})
 	return response
 }
 
@@ -151,7 +196,7 @@ export async function updateGameUserReviews(
 	userId: string,
 	reviews: Record<string, Record<string, boolean>>
 ) {
-	const response = await updateGame(gameId, { ["users." + userId + ".reviews"]: reviews })
+	const response = await updateGame(gameId, { ["state"]: GameState.END, ["users." + userId + ".reviews"]: reviews })
 	return response
 }
 
