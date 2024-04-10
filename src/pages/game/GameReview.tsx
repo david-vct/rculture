@@ -2,6 +2,7 @@ import { useState } from "react"
 import { QuestionView } from "../../components/question/QuestionView"
 import { Game } from "../../utils/types"
 import { AnswerReview } from "../../components/question/AnswerReview"
+import { Countdown } from "../../components/Countdown"
 
 type GameReviewProps = {
 	game: Game
@@ -53,7 +54,10 @@ export const GameReview = (props: GameReviewProps) => {
 	return (
 		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
 			<div className="flex flex-col items-center pb-16">
-				<div>{questionIndex + 1 + " / " + props.game.questions.length}</div>
+				<div className="flex space-x-16">
+					<Countdown key={questionIndex + "-" + usersIndex} time={props.game.reviewDuration} onComplete={goNext} />
+					<div>{questionIndex + 1 + " / " + props.game.questions.length}</div>
+				</div>
 				<progress
 					className="progress progress-primary"
 					value={questionIndex + 1}

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Game } from "../../utils/types"
 import { QuestionView } from "../../components/question/QuestionView"
+import { Countdown } from "../../components/Countdown"
 
 type GameQuizProps = {
 	game: Game
@@ -35,7 +36,10 @@ export const GameQuiz = (props: GameQuizProps) => {
 	return (
 		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 rounded-box space-y-4">
 			<div className="flex flex-col items-center pb-16">
-				<div>{questionIndex + 1 + " / " + questions.length}</div>
+				<div className="flex space-x-16">
+					<Countdown key={questionIndex} time={props.game.answerDuration} onComplete={handleAnswer} />
+					<div>{questionIndex + 1 + " / " + questions.length}</div>
+				</div>
 				<progress className="progress progress-primary" value={questionIndex + 1} max={questions.length}></progress>
 			</div>
 			<QuestionView question={questions[questionIndex]} isAnswerVisible={false} />
@@ -50,9 +54,6 @@ export const GameQuiz = (props: GameQuizProps) => {
 					onChange={(e) => setAnswer(e.target.value)}
 				/>
 			</div>
-			<button className="btn btn-primary self-end rounded-full" onClick={handleAnswer}>
-				Repondre
-			</button>
 		</div>
 	)
 }

@@ -31,6 +31,8 @@ export function initializeEmptyGameData(): GameData {
 		questions: [],
 		questionIndex: 0,
 		creationDate: getTodayDate(),
+		answerDuration: 20,
+		reviewDuration: 20,
 	}
 }
 

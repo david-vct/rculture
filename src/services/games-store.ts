@@ -102,7 +102,13 @@ export async function resetGame(id: string, game: Game) {
  * @param id
  * @returns
  */
-export async function startGame(id: string, tags: string[], nbQuestions: number) {
+export async function startGame(
+	id: string,
+	tags: string[],
+	nbQuestions: number,
+	answerDuration: number,
+	reviewDuration: number
+) {
 	// Get questions for the game
 	const questionResponse = await findRandomQuestionsByTags(tags, nbQuestions)
 	if (!questionResponse.success) {
@@ -110,7 +116,13 @@ export async function startGame(id: string, tags: string[], nbQuestions: number)
 	}
 
 	// Update state and questions in game
-	const data = { ["isSetup"]: true, ["questions"]: questionResponse.data }
+	const data = {
+		["isSetup"]: true,
+		["questions"]: questionResponse.data,
+		["answerDuration"]: answerDuration,
+		["reviewDuration"]: reviewDuration,
+	}
+
 	const response = await updateGame(id, data)
 	return response
 }

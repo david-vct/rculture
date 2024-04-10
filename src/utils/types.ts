@@ -87,6 +87,8 @@ export const GameDataSchema = z.object({
 	questions: z.array(QuestionSchema),
 	questionIndex: z.number(),
 	creationDate: z.string(),
+	answerDuration: z.number(),
+	reviewDuration: z.number(),
 })
 
 export const GameSchema = GameDataSchema.extend({
