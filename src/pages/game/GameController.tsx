@@ -9,11 +9,14 @@ import { GameQuiz } from "./GameQuiz"
 import { LobbyRoom } from "./LobbyRoom"
 import { toast } from "react-toastify"
 import { Toast } from "../../components/Toast"
+import { LoadingPage } from "../../components/LoadingPage"
 
 export const GameController = () => {
 	const { gameId } = useParams()
 	const [gameState, setGameState] = useState(GameState.WAITING)
 	const [game, setGame] = useState({} as Game)
+	const [isLoading, setIsLoading] = useState(false)
+	const [loadingCallback, setLoadingCallback] = useState(() => () => {})
 	const navigate = useNavigate()
 
 	// Parameter game id validation
@@ -26,6 +29,7 @@ export const GameController = () => {
 	// Lobby room controller
 	const handleGameStart = (game: Game) => {
 		setGame(game)
+		// Set game state to current state
 		setGameState(game.state)
 	}
 
@@ -37,7 +41,14 @@ export const GameController = () => {
 				console.error(response.error)
 				toast.error("Problème lors de la synchronisation des réponses")
 			} else {
-				setGameState(GameState.REVIEWING)
+				setIsLoading(true)
+				setLoadingCallback(() => {
+					if (gameState === GameState.PLAYING) {
+						setGameState(GameState.REVIEWING)
+					}
+
+					setIsLoading(false)
+				})
 			}
 		})
 	}
@@ -78,6 +89,7 @@ export const GameController = () => {
 			) : (
 				<GameScoreBoard game={game} onPlayAgain={handlePlayAgain} />
 			)}
+			{isLoading && <LoadingPage duration={5000} text="Synchronisation" onComplete={loadingCallback} />}
 			<Toast />
 		</div>
 	)

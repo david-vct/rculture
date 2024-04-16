@@ -22,7 +22,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 	const handleGameUpdate = (snapshot: QuerySnapshot) => {
 		console.log("  - Snapshot listener")
 
-		// Format as a game response
+		// Format snapshot as a game response
 		const response: StoreResponse<Game> = getSnapshotData(snapshot, GameSchema)
 
 		// Error handler
@@ -55,7 +55,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 	}
 
 	useEffect(() => {
-		// Add user to game
+		// Add actual user to game
 		addPlayerToGame(props.gameId, getUserInfo())
 
 		// Listen for game updates
