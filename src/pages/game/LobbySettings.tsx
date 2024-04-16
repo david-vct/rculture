@@ -36,9 +36,8 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 		})
 	}
 
-	const handleNbQuestionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = parseInt(e.target.value)
-		if (!isNaN(value)) setNbQuestions(value)
+	const handleNbQuestionsChange = (nbQuestions: number) => {
+		setNbQuestions(nbQuestions)
 	}
 
 	const handleTagSelectorChange = (tags: string[]) => {
@@ -65,7 +64,7 @@ export const LobbySettings = (props: LobbySettingsProps) => {
 					placeholder="Nombre de questions"
 					type="number"
 					value={nbQuestions}
-					onChange={handleNbQuestionsChange}
+					onChange={(e) => handleNbQuestionsChange(e.target.valueAsNumber)}
 				/>
 			</div>
 			<div className="form-control">
