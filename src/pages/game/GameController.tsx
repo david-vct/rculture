@@ -10,9 +10,11 @@ import { LobbyRoom } from "./LobbyRoom"
 import { toast } from "react-toastify"
 import { Toast } from "../../components/Toast"
 import { LoadingPage } from "../../components/LoadingPage"
+import { Auth } from "../Auth"
 
 export const GameController = () => {
 	const { gameId } = useParams()
+	const [user, setUser] = useState(getUserInfo())
 	const [gameState, setGameState] = useState(GameState.WAITING)
 	const [game, setGame] = useState({} as Game)
 	const [isLoading, setIsLoading] = useState(false)
@@ -96,6 +98,16 @@ export const GameController = () => {
 				setIsLoading(false)
 			})
 		})
+	}
+
+	if (!user.isAuth) {
+		return (
+			<Auth
+				onSignIn={() => {
+					setUser(getUserInfo())
+				}}
+			/>
+		)
 	}
 
 	return (
