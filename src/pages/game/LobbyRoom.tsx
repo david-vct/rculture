@@ -59,6 +59,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 		addPlayerToGame(props.gameId, getUserInfo())
 
 		// Listen for game updates
+		unsubscribe.current()
 		unsubscribe.current = listenGame(props.gameId, handleGameUpdate)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])

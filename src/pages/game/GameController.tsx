@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import { resetGame, updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
+import { findGameById, resetGame, updateGameUserAnswers, updateGameUserReviews } from "../../services/games-store"
 import { Game, GameState } from "../../utils/types"
 import { getUserInfo } from "../../services/authentication"
 import { GameReview } from "./GameReview"
@@ -35,20 +35,13 @@ export const GameController = () => {
 
 	// Game quiz controller
 	const handleQuizCompeted = (answers: Record<string, string>) => {
-		// Update user answers in the database
+		// Push user answers to the database
 		updateGameUserAnswers(game.id, getUserInfo().id, answers).then((response) => {
 			if (!response.success) {
 				console.error(response.error)
 				toast.error("Problème lors de la synchronisation des réponses")
 			} else {
-				setIsLoading(true)
-				setLoadingCallback(() => {
-					if (gameState === GameState.PLAYING) {
-						setGameState(GameState.REVIEWING)
-					}
-
-					setIsLoading(false)
-				})
+				loadNextGamePhase(GameState.REVIEWING)
 			}
 		})
 	}
@@ -61,7 +54,7 @@ export const GameController = () => {
 				console.error(response.error)
 				toast.error("Problème lors de la synchronisation des notations")
 			} else {
-				setGameState(GameState.END)
+				loadNextGamePhase(GameState.END)
 			}
 		})
 	}
@@ -78,6 +71,33 @@ export const GameController = () => {
 		})
 	}
 
+	/**
+	 * Sets updated game data and change game state
+	 * @param nextGameState
+	 */
+	const loadNextGamePhase = (nextGameState: GameState) => {
+		setIsLoading(true)
+
+		// This callback will fetch updated game and go to next state on finish
+		setLoadingCallback(() => () => {
+			// Fetch updated game
+			findGameById(game.id).then((response) => {
+				if (!response.success) {
+					console.error(response.error)
+					toast.error("Problème lors de la synchronisation de la partie")
+				} else if (response.data.length !== 1) {
+					console.error("Number of games must be 1")
+					toast.error("Problème lors de la synchronisation de la partie")
+				} else {
+					setGame(response.data.shift()!)
+					setGameState(nextGameState)
+				}
+
+				setIsLoading(false)
+			})
+		})
+	}
+
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center pt-16">
 			{gameState === GameState.WAITING ? (
@@ -89,7 +109,7 @@ export const GameController = () => {
 			) : (
 				<GameScoreBoard game={game} onPlayAgain={handlePlayAgain} />
 			)}
-			{isLoading && <LoadingPage duration={5000} text="Synchronisation" onComplete={loadingCallback} />}
+			{isLoading && <LoadingPage duration={3000} text="Synchronisation" onComplete={loadingCallback} />}
 			<Toast />
 		</div>
 	)
