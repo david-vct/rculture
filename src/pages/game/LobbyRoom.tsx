@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { addPlayerToGame, listenGame } from "../../services/games-store"
 import { getUserInfo } from "../../services/authentication"
 import { useNavigate } from "react-router-dom"
-import { Game, GameSchema, GameState, StoreResponse } from "../../utils/types"
+import { Game, GameSchema, GameState, GameUser, StoreResponse } from "../../utils/types"
 import { getSnapshotData } from "../../services/store"
 import { LobbySettings } from "./LobbySettings"
 import { LobbyPlayers } from "./LobbyPlayers"
@@ -15,7 +15,7 @@ type LobbyRoomProps = {
 }
 
 export const LobbyRoom = (props: LobbyRoomProps) => {
-	const [users, setUsers] = useState({})
+	const [users, setUsers] = useState({} as Record<string, GameUser>)
 	const unsubscribe = useRef(() => {})
 	const navigate = useNavigate()
 
@@ -42,7 +42,7 @@ export const LobbyRoom = (props: LobbyRoomProps) => {
 
 		// Update users
 		if (!isEqual(users, game.users)) {
-			setUsers(Object.values(game.users))
+			setUsers({ ...game.users })
 		}
 
 		// Start the game play if the game is ready
