@@ -1,4 +1,3 @@
-import { Auth } from "./pages/Auth"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { Home } from "./pages/Home"
 import { QuestionCreator } from "./pages/QuestionCreator/QuestionCreator"
@@ -16,7 +15,6 @@ function App() {
 				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/signin" element={<Auth />} />
 					<Route path="/questions" element={<QuestionCreator />} />
 					<Route path="/games/:gameId" element={<GameController />} />
 					<Route path="/error" element={<Oups />} />
