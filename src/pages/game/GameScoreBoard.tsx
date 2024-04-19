@@ -25,6 +25,25 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 
 	return (
 		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
+			<h1>Top players</h1>
+			<table className="table">
+				<thead>
+					<tr>
+						<th>Podium</th>
+						<th>Joueur</th>
+						<th>Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					{userIds.map((id, index) => (
+						<tr key={id}>
+							<th key={id}>{index + 1}</th>
+							<td key={id}>{props.game.users[id].name}</td>
+							<td key={id}>{scores.global.byUser[id]}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 			<h1>Score Board</h1>
 			<table className="table table-md">
 				<thead>
@@ -33,7 +52,7 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 						{userIds.map((id) => (
 							<th key={id}>{props.game.users[id].name}</th>
 						))}
-						<th>Total</th>
+						<th>Total (R | W)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -101,14 +120,14 @@ function computeScores(game: Game) {
 	for (const question of game.questions) {
 		for (const userId of userIds) {
 			// Initialize scores
-			if (scores.individual[userId] === undefined) {
-				scores.individual[userId] = {}
-			}
 			if (scores.global.byQuestion[question.id] === undefined) {
 				scores.global.byQuestion[question.id] = { win: 0, lose: 0 }
 			}
 			if (scores.global.byUser[userId] === undefined) {
 				scores.global.byUser[userId] = 0
+			}
+			if (scores.individual[userId] === undefined) {
+				scores.individual[userId] = {}
 			}
 
 			// Calculate individual user score
