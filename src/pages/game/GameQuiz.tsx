@@ -34,7 +34,7 @@ export const GameQuiz = (props: GameQuizProps) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 rounded-box space-y-4">
+		<div className="flex flex-col w-full sm:w-3/4 max-w-3xl px-4 py-8 sm:px-8 space-y-4 rounded-box backdrop-blur-3xl">
 			<div className="flex flex-col items-center pb-16">
 				<div className="flex space-x-16">
 					<Countdown key={questionIndex} time={props.game.answerDuration} onComplete={handleAnswer} />
