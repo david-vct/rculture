@@ -105,6 +105,7 @@ export const Background = () => {
 					</g>
 				</svg>
 			)}
+			<div className="fixed top-0 left-0 w-full h-full backdrop-blur-3xl sm:backdrop-blur-0"></div>
 		</div>
 	)
 }

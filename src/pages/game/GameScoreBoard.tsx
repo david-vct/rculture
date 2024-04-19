@@ -24,7 +24,7 @@ export const GameScoreBoard = (props: GameScoreBoardProps) => {
 	}
 
 	return (
-		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box">
+		<div className="w-full sm:w-3/4 max-w-7xl px-4 py-8 sm:px-8 space-y-4 rounded-box backdrop-blur-3xl">
 			<h1>Top players</h1>
 			<table className="table">
 				<thead>
