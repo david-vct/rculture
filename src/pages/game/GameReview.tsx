@@ -16,7 +16,7 @@ export const GameReview = (props: GameReviewProps) => {
 	const [isAnswerRight, setIsAnswerRight] = useState(false)
 
 	const question = props.game.questions[questionIndex]
-	const userIds = Object.keys(props.game.users)
+	const userIds = Object.keys(props.game.users).sort((a, b) => a.localeCompare(b))
 	const user = props.game.users[userIds[usersIndex]]
 
 	const goNext = () => {
